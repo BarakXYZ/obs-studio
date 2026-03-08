@@ -1,0 +1,53 @@
+uniform float4x4 ViewProj;
+uniform texture2d image;
+
+uniform float invert_strength;
+uniform texture2d region_component_mask;
+uniform float use_region_component_mask;
+
+sampler_state linear_sampler {
+	Filter = Linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
+sampler_state point_sampler {
+	Filter = Point;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
+struct VertData {
+	float4 pos : POSITION;
+	float2 uv  : TEXCOORD0;
+};
+
+VertData VSDefault(VertData v_in)
+{
+	VertData v_out;
+	v_out.pos = mul(float4(v_in.pos.xyz, 1.0), ViewProj);
+	v_out.uv = v_in.uv;
+	return v_out;
+}
+
+float4 PSDraw(VertData v_in) : TARGET
+{
+	float4 src = image.Sample(linear_sampler, v_in.uv);
+	float mask_alpha = 1.0;
+	if (use_region_component_mask > 0.5)
+		mask_alpha = region_component_mask.Sample(point_sampler, v_in.uv).a;
+
+	float strength = saturate(invert_strength) * saturate(mask_alpha);
+	float3 inverted = 1.0 - src.rgb;
+	float3 out_rgb = lerp(src.rgb, inverted, strength);
+	return float4(out_rgb, src.a);
+}
+
+technique Draw
+{
+	pass
+	{
+		vertex_shader = VSDefault(v_in);
+		pixel_shader = PSDraw(v_in);
+	}
+}

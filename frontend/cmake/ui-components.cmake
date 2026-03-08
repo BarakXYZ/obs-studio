@@ -42,6 +42,8 @@ target_sources(
     components/GameCaptureToolbar.hpp
     components/ImageSourceToolbar.cpp
     components/ImageSourceToolbar.hpp
+    components/LensesFocusDragHandles.cpp
+    components/LensesFocusDragHandles.hpp
     components/MediaControls.cpp
     components/MediaControls.hpp
     components/MenuButton.cpp

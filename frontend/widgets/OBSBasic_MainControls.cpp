@@ -228,6 +228,8 @@ void OBSBasic::on_actionShowMacPermissions_triggered()
 			     CheckPermission(kAudioDeviceAccess), CheckPermission(kInputMonitoring));
 	check.exec();
 #endif
+
+	RecoverLensesMainMirrorPipeline(true);
 }
 
 void OBSBasic::on_actionAdvAudioProperties_triggered()

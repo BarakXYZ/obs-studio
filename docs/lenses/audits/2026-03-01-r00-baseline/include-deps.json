@@ -1,0 +1,606 @@
+{
+  "plugin_root": "plugins/lenses",
+  "edge_count": 27,
+  "module_edges": [
+    {
+      "from": "include:ai",
+      "to": "include:ai",
+      "count": 1
+    },
+    {
+      "from": "include:ai",
+      "to": "include:core",
+      "count": 5
+    },
+    {
+      "from": "include:ai",
+      "to": "system",
+      "count": 16
+    },
+    {
+      "from": "include:core",
+      "to": "include:core",
+      "count": 5
+    },
+    {
+      "from": "include:core",
+      "to": "system",
+      "count": 20
+    },
+    {
+      "from": "include:io",
+      "to": "system",
+      "count": 6
+    },
+    {
+      "from": "include:lenses-filter.h",
+      "to": "system",
+      "count": 1
+    },
+    {
+      "from": "other",
+      "to": "include:ai",
+      "count": 4
+    },
+    {
+      "from": "other",
+      "to": "include:core",
+      "count": 1
+    },
+    {
+      "from": "other",
+      "to": "include:lenses-filter.h",
+      "count": 1
+    },
+    {
+      "from": "other",
+      "to": "system",
+      "count": 16
+    },
+    {
+      "from": "src:ai",
+      "to": "include:ai",
+      "count": 10
+    },
+    {
+      "from": "src:ai",
+      "to": "include:core",
+      "count": 3
+    },
+    {
+      "from": "src:ai",
+      "to": "src:ai",
+      "count": 2
+    },
+    {
+      "from": "src:ai",
+      "to": "system",
+      "count": 43
+    },
+    {
+      "from": "src:core",
+      "to": "include:ai",
+      "count": 3
+    },
+    {
+      "from": "src:core",
+      "to": "include:core",
+      "count": 8
+    },
+    {
+      "from": "src:core",
+      "to": "system",
+      "count": 17
+    },
+    {
+      "from": "src:filter",
+      "to": "include:core",
+      "count": 1
+    },
+    {
+      "from": "src:filter",
+      "to": "include:io",
+      "count": 2
+    },
+    {
+      "from": "src:filter",
+      "to": "include:lenses-filter.h",
+      "count": 1
+    },
+    {
+      "from": "src:filter",
+      "to": "src:pipeline",
+      "count": 1
+    },
+    {
+      "from": "src:filter",
+      "to": "system",
+      "count": 10
+    },
+    {
+      "from": "src:io",
+      "to": "include:io",
+      "count": 2
+    },
+    {
+      "from": "src:io",
+      "to": "system",
+      "count": 20
+    },
+    {
+      "from": "src:pipeline",
+      "to": "src:pipeline",
+      "count": 1
+    },
+    {
+      "from": "src:pipeline",
+      "to": "system",
+      "count": 3
+    }
+  ],
+  "file_include_counts": {
+    "plugins/lenses/include/lenses/ai/cloud/cloud-mask-generator.hpp": {
+      "local": 1,
+      "system": 2,
+      "total": 3
+    },
+    "plugins/lenses/include/lenses/ai/decode/segmentation-decoder.hpp": {
+      "local": 1,
+      "system": 2,
+      "total": 3
+    },
+    "plugins/lenses/include/lenses/ai/runtime/backend-resolver.hpp": {
+      "local": 1,
+      "system": 3,
+      "total": 4
+    },
+    "plugins/lenses/include/lenses/ai/runtime/mask-generator-factory.hpp": {
+      "local": 1,
+      "system": 1,
+      "total": 2
+    },
+    "plugins/lenses/include/lenses/ai/runtime/model-descriptor.hpp": {
+      "local": 0,
+      "system": 2,
+      "total": 2
+    },
+    "plugins/lenses/include/lenses/ai/runtime/model-registry.hpp": {
+      "local": 1,
+      "system": 4,
+      "total": 5
+    },
+    "plugins/lenses/include/lenses/ai/tracking/bytetrack-tracker.hpp": {
+      "local": 1,
+      "system": 2,
+      "total": 3
+    },
+    "plugins/lenses/include/lenses/core/core-bridge.h": {
+      "local": 0,
+      "system": 3,
+      "total": 3
+    },
+    "plugins/lenses/include/lenses/core/interfaces.hpp": {
+      "local": 1,
+      "system": 4,
+      "total": 5
+    },
+    "plugins/lenses/include/lenses/core/noop-compositor.hpp": {
+      "local": 1,
+      "system": 0,
+      "total": 1
+    },
+    "plugins/lenses/include/lenses/core/noop-mask-generator.hpp": {
+      "local": 1,
+      "system": 5,
+      "total": 6
+    },
+    "plugins/lenses/include/lenses/core/registry.hpp": {
+      "local": 1,
+      "system": 3,
+      "total": 4
+    },
+    "plugins/lenses/include/lenses/core/rule-compiler.hpp": {
+      "local": 1,
+      "system": 0,
+      "total": 1
+    },
+    "plugins/lenses/include/lenses/core/types.hpp": {
+      "local": 0,
+      "system": 5,
+      "total": 5
+    },
+    "plugins/lenses/include/lenses/io/lenses-model-catalog.h": {
+      "local": 0,
+      "system": 3,
+      "total": 3
+    },
+    "plugins/lenses/include/lenses/io/lenses-policy.h": {
+      "local": 0,
+      "system": 3,
+      "total": 3
+    },
+    "plugins/lenses/include/lenses/lenses-filter.h": {
+      "local": 0,
+      "system": 1,
+      "total": 1
+    },
+    "plugins/lenses/lenses-module.c": {
+      "local": 1,
+      "system": 1,
+      "total": 2
+    },
+    "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp": {
+      "local": 1,
+      "system": 1,
+      "total": 2
+    },
+    "plugins/lenses/src/ai/decode/segmentation-decoder.cpp": {
+      "local": 1,
+      "system": 5,
+      "total": 6
+    },
+    "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp": {
+      "local": 4,
+      "system": 26,
+      "total": 30
+    },
+    "plugins/lenses/src/ai/ort/onnx-mask-generator.hpp": {
+      "local": 1,
+      "system": 1,
+      "total": 2
+    },
+    "plugins/lenses/src/ai/runtime/backend-resolver.cpp": {
+      "local": 1,
+      "system": 4,
+      "total": 5
+    },
+    "plugins/lenses/src/ai/runtime/mask-generator-factory.cpp": {
+      "local": 5,
+      "system": 3,
+      "total": 8
+    },
+    "plugins/lenses/src/ai/runtime/model-registry.cpp": {
+      "local": 1,
+      "system": 0,
+      "total": 1
+    },
+    "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp": {
+      "local": 1,
+      "system": 3,
+      "total": 4
+    },
+    "plugins/lenses/src/core/core-bridge.cpp": {
+      "local": 6,
+      "system": 10,
+      "total": 16
+    },
+    "plugins/lenses/src/core/noop-compositor.cpp": {
+      "local": 1,
+      "system": 0,
+      "total": 1
+    },
+    "plugins/lenses/src/core/noop-mask-generator.cpp": {
+      "local": 2,
+      "system": 4,
+      "total": 6
+    },
+    "plugins/lenses/src/core/registry.cpp": {
+      "local": 1,
+      "system": 2,
+      "total": 3
+    },
+    "plugins/lenses/src/core/rule-compiler.cpp": {
+      "local": 1,
+      "system": 1,
+      "total": 2
+    },
+    "plugins/lenses/src/filter/lenses-filter.c": {
+      "local": 5,
+      "system": 10,
+      "total": 15
+    },
+    "plugins/lenses/src/io/lenses-model-catalog.c": {
+      "local": 1,
+      "system": 10,
+      "total": 11
+    },
+    "plugins/lenses/src/io/lenses-policy.c": {
+      "local": 1,
+      "system": 10,
+      "total": 11
+    },
+    "plugins/lenses/src/pipeline/lenses-pass.c": {
+      "local": 1,
+      "system": 2,
+      "total": 3
+    },
+    "plugins/lenses/src/pipeline/lenses-pass.h": {
+      "local": 0,
+      "system": 1,
+      "total": 1
+    },
+    "plugins/lenses/test/bytetrack-tracker-test.cpp": {
+      "local": 1,
+      "system": 2,
+      "total": 3
+    },
+    "plugins/lenses/test/lenses-benchmark.cpp": {
+      "local": 2,
+      "system": 6,
+      "total": 8
+    },
+    "plugins/lenses/test/lenses-runtime-soak-test.cpp": {
+      "local": 1,
+      "system": 4,
+      "total": 5
+    },
+    "plugins/lenses/test/segmentation-decoder-test.cpp": {
+      "local": 1,
+      "system": 3,
+      "total": 4
+    }
+  },
+  "include_frequency": [
+    {
+      "include": "string",
+      "count": 11
+    },
+    {
+      "include": "memory",
+      "count": 9
+    },
+    {
+      "include": "vector",
+      "count": 9
+    },
+    {
+      "include": "lenses/core/interfaces.hpp",
+      "count": 8
+    },
+    {
+      "include": "cstdint",
+      "count": 8
+    },
+    {
+      "include": "algorithm",
+      "count": 8
+    },
+    {
+      "include": "obs-module.h",
+      "count": 7
+    },
+    {
+      "include": "mutex",
+      "count": 6
+    },
+    {
+      "include": "optional",
+      "count": 6
+    },
+    {
+      "include": "utility",
+      "count": 6
+    },
+    {
+      "include": "lenses/ai/tracking/bytetrack-tracker.hpp",
+      "count": 5
+    },
+    {
+      "include": "util/platform.h",
+      "count": 5
+    },
+    {
+      "include": "unordered_map",
+      "count": 4
+    },
+    {
+      "include": "lenses/ai/decode/segmentation-decoder.hpp",
+      "count": 4
+    },
+    {
+      "include": "cmath",
+      "count": 4
+    },
+    {
+      "include": "lenses/core/noop-mask-generator.hpp",
+      "count": 4
+    },
+    {
+      "include": "util/bmem.h",
+      "count": 4
+    },
+    {
+      "include": "chrono",
+      "count": 4
+    },
+    {
+      "include": "inttypes.h",
+      "count": 4
+    },
+    {
+      "include": "iostream",
+      "count": 4
+    },
+    {
+      "include": "lenses/core/types.hpp",
+      "count": 3
+    },
+    {
+      "include": "stdbool.h",
+      "count": 3
+    },
+    {
+      "include": "stddef.h",
+      "count": 3
+    },
+    {
+      "include": "stdint.h",
+      "count": 3
+    },
+    {
+      "include": "thread",
+      "count": 3
+    },
+    {
+      "include": "lenses/ai/runtime/backend-resolver.hpp",
+      "count": 3
+    },
+    {
+      "include": "util/dstr.h",
+      "count": 3
+    },
+    {
+      "include": "stdio.h",
+      "count": 3
+    },
+    {
+      "include": "string.h",
+      "count": 3
+    },
+    {
+      "include": "cstddef",
+      "count": 2
+    },
+    {
+      "include": "condition_variable",
+      "count": 2
+    },
+    {
+      "include": "deque",
+      "count": 2
+    },
+    {
+      "include": "lenses/lenses-filter.h",
+      "count": 2
+    },
+    {
+      "include": "lenses/ai/cloud/cloud-mask-generator.hpp",
+      "count": 2
+    },
+    {
+      "include": "ai/ort/onnx-mask-generator.hpp",
+      "count": 2
+    },
+    {
+      "include": "cctype",
+      "count": 2
+    },
+    {
+      "include": "lenses/ai/runtime/mask-generator-factory.hpp",
+      "count": 2
+    },
+    {
+      "include": "lenses/core/core-bridge.h",
+      "count": 2
+    },
+    {
+      "include": "lenses/core/noop-compositor.hpp",
+      "count": 2
+    },
+    {
+      "include": "lenses/core/registry.hpp",
+      "count": 2
+    },
+    {
+      "include": "lenses/core/rule-compiler.hpp",
+      "count": 2
+    },
+    {
+      "include": "lenses/io/lenses-model-catalog.h",
+      "count": 2
+    },
+    {
+      "include": "lenses/io/lenses-policy.h",
+      "count": 2
+    },
+    {
+      "include": "pipeline/lenses-pass.h",
+      "count": 2
+    },
+    {
+      "include": "graphics/vec4.h",
+      "count": 2
+    },
+    {
+      "include": "obs-data.h",
+      "count": 2
+    },
+    {
+      "include": "ctype.h",
+      "count": 2
+    },
+    {
+      "include": "strings.h",
+      "count": 2
+    },
+    {
+      "include": "stdlib.h",
+      "count": 2
+    },
+    {
+      "include": "lenses/ai/runtime/model-descriptor.hpp",
+      "count": 1
+    },
+    {
+      "include": "onnxruntime_cxx_api.h",
+      "count": 1
+    },
+    {
+      "include": "onnxruntime/core/providers/coreml/coreml_provider_factory.h",
+      "count": 1
+    },
+    {
+      "include": "coreml_provider_factory.h",
+      "count": 1
+    },
+    {
+      "include": "Accelerate/Accelerate.h",
+      "count": 1
+    },
+    {
+      "include": "array",
+      "count": 1
+    },
+    {
+      "include": "cstdlib",
+      "count": 1
+    },
+    {
+      "include": "exception",
+      "count": 1
+    },
+    {
+      "include": "limits",
+      "count": 1
+    },
+    {
+      "include": "lenses/ai/runtime/model-registry.hpp",
+      "count": 1
+    },
+    {
+      "include": "cstdio",
+      "count": 1
+    },
+    {
+      "include": "cstring",
+      "count": 1
+    },
+    {
+      "include": "graphics/vec2.h",
+      "count": 1
+    },
+    {
+      "include": "obs-source.h",
+      "count": 1
+    },
+    {
+      "include": "math.h",
+      "count": 1
+    },
+    {
+      "include": "numeric",
+      "count": 1
+    }
+  ],
+  "unclassified_local_includes": []
+}

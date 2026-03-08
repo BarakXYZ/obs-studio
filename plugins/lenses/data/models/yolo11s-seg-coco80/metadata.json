@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "lenses_schema": "lenses-model-v1",
+  "exported_at_utc": "2026-02-28T20:44:54.605286+00:00",
+  "source_model": "yolo11s-seg.pt",
+  "task": "segment",
+  "model": {
+    "file": "model.onnx",
+    "sha256": "99598df67be5b9b609320c6a26b16097a4c5b04a91aadd7697ed30b825521a51",
+    "imgsz": [
+      640,
+      640
+    ],
+    "batch": 1,
+    "dynamic": false,
+    "static_input": true,
+    "static_output": true,
+    "supports_iobinding_static_outputs": true,
+    "opset": 21,
+    "runtime": "onnxruntime"
+  },
+  "class_map_file": "class-map.json",
+  "class_count": 80,
+  "ultralytics_export": {
+    "format": "onnx",
+    "simplify": true,
+    "half": false,
+    "nms": false,
+    "device": null
+  },
+  "id": "yolo11s-seg-coco80",
+  "name": "YOLO11s Segmentation (COCO80)",
+  "size_tier": "s",
+  "distribution": {
+    "bundled": true,
+    "license_note": "Review and comply with upstream model and dataset licenses before commercial distribution."
+  }
+}

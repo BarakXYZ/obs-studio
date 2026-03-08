@@ -1,0 +1,330 @@
+{
+  "plugin_root": "plugins/lenses",
+  "file_count": 40,
+  "total_lines": 9091,
+  "average_lines": 227.275,
+  "top_files": [
+    {
+      "path": "plugins/lenses/src/filter/lenses-filter.c",
+      "lines": 2890
+    },
+    {
+      "path": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "lines": 2028
+    },
+    {
+      "path": "plugins/lenses/src/core/core-bridge.cpp",
+      "lines": 585
+    },
+    {
+      "path": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "lines": 580
+    },
+    {
+      "path": "plugins/lenses/src/io/lenses-policy.c",
+      "lines": 553
+    },
+    {
+      "path": "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp",
+      "lines": 201
+    },
+    {
+      "path": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "lines": 192
+    },
+    {
+      "path": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "lines": 188
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/core-bridge.h",
+      "lines": 165
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/interfaces.hpp",
+      "lines": 162
+    },
+    {
+      "path": "plugins/lenses/src/ai/runtime/backend-resolver.cpp",
+      "lines": 157
+    },
+    {
+      "path": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "lines": 152
+    },
+    {
+      "path": "plugins/lenses/test/bytetrack-tracker-test.cpp",
+      "lines": 116
+    },
+    {
+      "path": "plugins/lenses/src/pipeline/lenses-pass.c",
+      "lines": 115
+    },
+    {
+      "path": "plugins/lenses/test/lenses-benchmark.cpp",
+      "lines": 106
+    },
+    {
+      "path": "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp",
+      "lines": 96
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/types.hpp",
+      "lines": 88
+    },
+    {
+      "path": "plugins/lenses/test/lenses-runtime-soak-test.cpp",
+      "lines": 85
+    },
+    {
+      "path": "plugins/lenses/include/lenses/io/lenses-policy.h",
+      "lines": 60
+    },
+    {
+      "path": "plugins/lenses/include/lenses/io/lenses-model-catalog.h",
+      "lines": 53
+    },
+    {
+      "path": "plugins/lenses/src/ai/runtime/mask-generator-factory.cpp",
+      "lines": 48
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/tracking/bytetrack-tracker.hpp",
+      "lines": 42
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/decode/segmentation-decoder.hpp",
+      "lines": 39
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/noop-mask-generator.hpp",
+      "lines": 39
+    },
+    {
+      "path": "plugins/lenses/src/ai/runtime/model-registry.cpp",
+      "lines": 33
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/cloud/cloud-mask-generator.hpp",
+      "lines": 30
+    },
+    {
+      "path": "plugins/lenses/src/core/rule-compiler.cpp",
+      "lines": 30
+    },
+    {
+      "path": "plugins/lenses/src/pipeline/lenses-pass.h",
+      "lines": 30
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/runtime/backend-resolver.hpp",
+      "lines": 28
+    },
+    {
+      "path": "plugins/lenses/src/ai/ort/onnx-mask-generator.hpp",
+      "lines": 26
+    },
+    {
+      "path": "plugins/lenses/src/core/registry.cpp",
+      "lines": 26
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/runtime/model-registry.hpp",
+      "lines": 23
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/runtime/model-descriptor.hpp",
+      "lines": 22
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/registry.hpp",
+      "lines": 22
+    },
+    {
+      "path": "plugins/lenses/src/core/noop-compositor.cpp",
+      "lines": 19
+    },
+    {
+      "path": "plugins/lenses/lenses-module.c",
+      "lines": 18
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/noop-compositor.hpp",
+      "lines": 13
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/rule-compiler.hpp",
+      "lines": 13
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/runtime/mask-generator-factory.hpp",
+      "lines": 11
+    },
+    {
+      "path": "plugins/lenses/include/lenses/lenses-filter.h",
+      "lines": 7
+    }
+  ],
+  "all_files": [
+    {
+      "path": "plugins/lenses/src/filter/lenses-filter.c",
+      "lines": 2890
+    },
+    {
+      "path": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "lines": 2028
+    },
+    {
+      "path": "plugins/lenses/src/core/core-bridge.cpp",
+      "lines": 585
+    },
+    {
+      "path": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "lines": 580
+    },
+    {
+      "path": "plugins/lenses/src/io/lenses-policy.c",
+      "lines": 553
+    },
+    {
+      "path": "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp",
+      "lines": 201
+    },
+    {
+      "path": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "lines": 192
+    },
+    {
+      "path": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "lines": 188
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/core-bridge.h",
+      "lines": 165
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/interfaces.hpp",
+      "lines": 162
+    },
+    {
+      "path": "plugins/lenses/src/ai/runtime/backend-resolver.cpp",
+      "lines": 157
+    },
+    {
+      "path": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "lines": 152
+    },
+    {
+      "path": "plugins/lenses/test/bytetrack-tracker-test.cpp",
+      "lines": 116
+    },
+    {
+      "path": "plugins/lenses/src/pipeline/lenses-pass.c",
+      "lines": 115
+    },
+    {
+      "path": "plugins/lenses/test/lenses-benchmark.cpp",
+      "lines": 106
+    },
+    {
+      "path": "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp",
+      "lines": 96
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/types.hpp",
+      "lines": 88
+    },
+    {
+      "path": "plugins/lenses/test/lenses-runtime-soak-test.cpp",
+      "lines": 85
+    },
+    {
+      "path": "plugins/lenses/include/lenses/io/lenses-policy.h",
+      "lines": 60
+    },
+    {
+      "path": "plugins/lenses/include/lenses/io/lenses-model-catalog.h",
+      "lines": 53
+    },
+    {
+      "path": "plugins/lenses/src/ai/runtime/mask-generator-factory.cpp",
+      "lines": 48
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/tracking/bytetrack-tracker.hpp",
+      "lines": 42
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/decode/segmentation-decoder.hpp",
+      "lines": 39
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/noop-mask-generator.hpp",
+      "lines": 39
+    },
+    {
+      "path": "plugins/lenses/src/ai/runtime/model-registry.cpp",
+      "lines": 33
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/cloud/cloud-mask-generator.hpp",
+      "lines": 30
+    },
+    {
+      "path": "plugins/lenses/src/core/rule-compiler.cpp",
+      "lines": 30
+    },
+    {
+      "path": "plugins/lenses/src/pipeline/lenses-pass.h",
+      "lines": 30
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/runtime/backend-resolver.hpp",
+      "lines": 28
+    },
+    {
+      "path": "plugins/lenses/src/ai/ort/onnx-mask-generator.hpp",
+      "lines": 26
+    },
+    {
+      "path": "plugins/lenses/src/core/registry.cpp",
+      "lines": 26
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/runtime/model-registry.hpp",
+      "lines": 23
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/runtime/model-descriptor.hpp",
+      "lines": 22
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/registry.hpp",
+      "lines": 22
+    },
+    {
+      "path": "plugins/lenses/src/core/noop-compositor.cpp",
+      "lines": 19
+    },
+    {
+      "path": "plugins/lenses/lenses-module.c",
+      "lines": 18
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/noop-compositor.hpp",
+      "lines": 13
+    },
+    {
+      "path": "plugins/lenses/include/lenses/core/rule-compiler.hpp",
+      "lines": 13
+    },
+    {
+      "path": "plugins/lenses/include/lenses/ai/runtime/mask-generator-factory.hpp",
+      "lines": 11
+    },
+    {
+      "path": "plugins/lenses/include/lenses/lenses-filter.h",
+      "lines": 7
+    }
+  ]
+}

@@ -8,6 +8,9 @@
 
 #include <qt-wrappers.hpp>
 
+#include <algorithm>
+#include <cmath>
+
 #include <QScreen>
 #include <QWindow>
 
@@ -17,15 +20,43 @@ static QList<OBSProjector *> multiviewProjectors;
 
 static bool updatingMultiview = false, mouseSwitching, transitionOnDoubleClick;
 
+struct ProjectorRenderRegion {
+	int x;
+	int y;
+	int width;
+	int height;
+	float left;
+	float right;
+	float top;
+	float bottom;
+};
+
+static bool IsMultiviewProjectorType(ProjectorType type)
+{
+	return type == ProjectorType::Multiview;
+}
+
+static ProjectorRenderRegion BuildScaleToFitRegion(uint32_t targetCX, uint32_t targetCY, uint32_t outputCX,
+						   uint32_t outputCY)
+{
+	int x, y;
+	float scale;
+	GetScaleAndCenterPos((int)targetCX, (int)targetCY, (int)outputCX, (int)outputCY, x, y, scale);
+
+	return {x, y, int(scale * float(targetCX)), int(scale * float(targetCY)), 0.0f, float(targetCX), 0.0f,
+		float(targetCY)};
+}
+
+static QString SourceNameOrEmpty(OBSSource source)
+{
+	return source ? QT_UTF8(obs_source_get_name(source)) : QString();
+}
+
 OBSProjector::OBSProjector(QWidget *widget, obs_source_t *source_, int monitor, ProjectorType type_)
 	: OBSQTDisplay(widget, Qt::Window),
 	  weakSource(OBSGetWeakRef(source_))
 {
-	OBSSource source = GetSource();
-	if (source) {
-		sigs.emplace_back(obs_source_get_signal_handler(source), "rename", OBSSourceRenamed, this);
-		sigs.emplace_back(obs_source_get_signal_handler(source), "destroy", OBSSourceDestroyed, this);
-	}
+	OBSSource source = nullptr;
 
 	isAlwaysOnTop = config_get_bool(App()->GetUserConfig(), "BasicWindow", "ProjectorAlwaysOnTop");
 
@@ -42,6 +73,12 @@ OBSProjector::OBSProjector(QWidget *widget, obs_source_t *source_, int monitor, 
 #endif
 
 	type = type_;
+
+	source = GetSource();
+	if (source && sigs.empty()) {
+		sigs.emplace_back(obs_source_get_signal_handler(source), "rename", OBSSourceRenamed, this);
+		sigs.emplace_back(obs_source_get_signal_handler(source), "destroy", OBSSourceDestroyed, this);
+	}
 #ifndef __APPLE__
 	setWindowIcon(QIcon::fromTheme("obs", QIcon(":/res/images/obs.png")));
 #endif
@@ -51,10 +88,7 @@ OBSProjector::OBSProjector(QWidget *widget, obs_source_t *source_, int monitor, 
 	else
 		SetMonitor(monitor);
 
-	if (source)
-		UpdateProjectorTitle(QT_UTF8(obs_source_get_name(source)));
-	else
-		UpdateProjectorTitle(QString());
+	UpdateProjectorTitle(SourceNameOrEmpty(source));
 
 	QAction *action = new QAction(this);
 	action->setShortcut(Qt::Key_Escape);
@@ -69,7 +103,7 @@ OBSProjector::OBSProjector(QWidget *widget, obs_source_t *source_, int monitor, 
 	installEventFilter(CreateShortcutFilter());
 
 	auto addDrawCallback = [this]() {
-		bool isMultiview = type == ProjectorType::Multiview;
+		bool isMultiview = IsMultiviewProjectorType(type);
 		obs_display_add_draw_callback(GetDisplay(), isMultiview ? OBSRenderMultiview : OBSRender, this);
 		obs_display_set_background_color(GetDisplay(), 0x000000);
 	};
@@ -77,7 +111,7 @@ OBSProjector::OBSProjector(QWidget *widget, obs_source_t *source_, int monitor, 
 	connect(this, &OBSQTDisplay::DisplayCreated, this, addDrawCallback);
 	connect(App(), &QGuiApplication::screenRemoved, this, &OBSProjector::ScreenRemoved);
 
-	if (type == ProjectorType::Multiview) {
+	if (IsMultiviewProjectorType(type)) {
 		multiview = new Multiview();
 
 		UpdateMultiview();
@@ -102,7 +136,7 @@ OBSProjector::~OBSProjector()
 {
 	sigs.clear();
 
-	bool isMultiview = type == ProjectorType::Multiview;
+	bool isMultiview = IsMultiviewProjectorType(type);
 	obs_display_remove_draw_callback(GetDisplay(), isMultiview ? OBSRenderMultiview : OBSRender, this);
 
 	OBSSource source = GetSource();
@@ -132,7 +166,7 @@ void OBSProjector::SetHideCursor()
 
 	bool hideCursor = config_get_bool(App()->GetUserConfig(), "BasicWindow", "HideProjectorCursor");
 
-	if (hideCursor && type != ProjectorType::Multiview)
+	if (hideCursor && !IsMultiviewProjectorType(type))
 		setCursor(Qt::BlankCursor);
 	else
 		setCursor(Qt::ArrowCursor);
@@ -156,14 +190,27 @@ void OBSProjector::OBSRender(void *data, uint32_t cx, uint32_t cy)
 		return;
 
 	OBSBasic *main = OBSBasic::Get();
+
 	OBSSource source = window->GetSource();
+	const ProjectorType type = window->type;
+
+	if (type == ProjectorType::Preview && main->IsPreviewProgramMode()) {
+		OBSSource curSource = main->GetCurrentSceneSource();
+
+		if (source != curSource) {
+			if (source)
+				obs_source_dec_showing(source);
+			if (curSource)
+				obs_source_inc_showing(curSource);
+			source = curSource;
+			window->weakSource = OBSGetWeakRef(source);
+		}
+	} else if (type == ProjectorType::Preview && !main->IsPreviewProgramMode()) {
+		window->weakSource = nullptr;
+	}
 
 	uint32_t targetCX;
 	uint32_t targetCY;
-	int x, y;
-	int newCX, newCY;
-	float scale;
-
 	if (source) {
 		targetCX = std::max(obs_source_get_width(source), 1u);
 		targetCY = std::max(obs_source_get_height(source), 1u);
@@ -174,25 +221,11 @@ void OBSProjector::OBSRender(void *data, uint32_t cx, uint32_t cy)
 		targetCY = ovi.base_height;
 	}
 
-	GetScaleAndCenterPos(targetCX, targetCY, cx, cy, x, y, scale);
+	const ProjectorRenderRegion region = BuildScaleToFitRegion(targetCX, targetCY, cx, cy);
+	if (region.width <= 0 || region.height <= 0)
+		return;
 
-	newCX = int(scale * float(targetCX));
-	newCY = int(scale * float(targetCY));
-
-	startRegion(x, y, newCX, newCY, 0.0f, float(targetCX), 0.0f, float(targetCY));
-
-	if (window->type == ProjectorType::Preview && main->IsPreviewProgramMode()) {
-		OBSSource curSource = main->GetCurrentSceneSource();
-
-		if (source != curSource) {
-			obs_source_dec_showing(source);
-			obs_source_inc_showing(curSource);
-			source = curSource;
-			window->weakSource = OBSGetWeakRef(source);
-		}
-	} else if (window->type == ProjectorType::Preview && !main->IsPreviewProgramMode()) {
-		window->weakSource = nullptr;
-	}
+	startRegion(region.x, region.y, region.width, region.height, region.left, region.right, region.top, region.bottom);
 
 	if (source)
 		obs_source_video_render(source);
@@ -228,7 +261,7 @@ void OBSProjector::mouseDoubleClickEvent(QMouseEvent *event)
 		return;
 
 	// Only MultiView projectors handle double click
-	if (this->type != ProjectorType::Multiview)
+	if (!IsMultiviewProjectorType(this->type))
 		return;
 
 	OBSBasic *main = (OBSBasic *)obs_frontend_get_main_window();
@@ -276,7 +309,7 @@ void OBSProjector::mousePressEvent(QMouseEvent *event)
 		popup.exec(QCursor::pos());
 	} else if (event->button() == Qt::LeftButton) {
 		// Only MultiView projectors handle left click
-		if (this->type != ProjectorType::Multiview)
+		if (!IsMultiviewProjectorType(this->type))
 			return;
 
 		if (!mouseSwitching)
@@ -352,7 +385,7 @@ ProjectorType OBSProjector::GetProjectorType()
 	return type;
 }
 
-int OBSProjector::GetMonitor()
+int OBSProjector::GetMonitor() const
 {
 	return savedMonitor;
 }
@@ -388,7 +421,7 @@ void OBSProjector::OpenFullScreenProjector()
 	SetMonitor(monitor);
 
 	OBSSource source = GetSource();
-	UpdateProjectorTitle(QT_UTF8(obs_source_get_name(source)));
+	UpdateProjectorTitle(SourceNameOrEmpty(source));
 }
 
 void OBSProjector::OpenWindowedProjector()
@@ -405,7 +438,7 @@ void OBSProjector::OpenWindowedProjector()
 	savedMonitor = -1;
 
 	OBSSource source = GetSource();
-	UpdateProjectorTitle(QT_UTF8(obs_source_get_name(source)));
+	UpdateProjectorTitle(SourceNameOrEmpty(source));
 }
 
 void OBSProjector::ResizeToContent()

@@ -63,6 +63,9 @@ struct API_AVAILABLE(macos(12.5)) screen_capture {
     ScreenCaptureAudioStreamType audio_capture_type;
     CGDirectDisplayID display;
     CGWindowID window;
+    CGWindowID exclusion_window;
+    bool exclusion_window_nonshareable_logged;
+    bool exclusion_window_missing_logged;
     NSString *application_id;
 };
 

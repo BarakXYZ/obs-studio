@@ -1,0 +1,107 @@
+INFO:  Checking plugins/lenses/data/models/yolo11m-seg-coco80/model.onnx for usability with ORT Mobile.
+INFO:  Checking NNAPI
+INFO:  3 partitions with a total of 45/540 nodes can be handled by the NNAPI EP.
+INFO:  	Partition sizes: [10, 26, 9]
+INFO:  Unsupported nodes due to operator=27
+INFO:  	Unsupported ops: ai.onnx:ConstantOfShape,ai.onnx:ConvTranspose,ai.onnx:Expand,ai.onnx:Range,ai.onnx:Shape
+INFO:  	Caveats that have not been checked and may result in a node not actually being supported:  
+     ai.onnx:Conv:Only 2D Conv is supported. Weights and bias should be constant.
+     ai.onnx:Gather:Input indices should be constant if not int32 type.
+     ai.onnx:MaxPool:Only 2D Pool is supported.
+     ai.onnx:Resize:Only 2D Resize is supported.
+     ai.onnx:Split:Number of splits must evenly divide split axis size. Input split should be constant if provided.
+     ai.onnx:Unsqueeze:Input axes should be constant.
+INFO:  Unsupported nodes due to input having a dynamic shape=486
+INFO:  NNAPI is not recommended with this model as there are 3 partitions covering 8.3% of the nodes in the model. This will most likely result in worse performance than just using the CPU EP.
+INFO:  Model should perform well with NNAPI as is: NO
+INFO:  --------
+INFO:  Checking if model will perform better if the dynamic shapes are fixed...
+INFO:  Partition information if the model was updated to make the shapes fixed:
+INFO:  6 partitions with a total of 513/540 nodes can be handled by the NNAPI EP.
+INFO:  	Partition sizes: [158, 257, 45, 27, 3, 23]
+INFO:  Unsupported nodes due to operator=27
+INFO:  	Unsupported ops: ai.onnx:ConstantOfShape,ai.onnx:ConvTranspose,ai.onnx:Expand,ai.onnx:Range,ai.onnx:Shape
+INFO:  	Caveats that have not been checked and may result in a node not actually being supported:  
+     ai.onnx:Conv:Only 2D Conv is supported. Weights and bias should be constant.
+     ai.onnx:Gather:Input indices should be constant if not int32 type.
+     ai.onnx:MaxPool:Only 2D Pool is supported.
+     ai.onnx:Resize:Only 2D Resize is supported.
+     ai.onnx:Split:Number of splits must evenly divide split axis size. Input split should be constant if provided.
+     ai.onnx:Unsqueeze:Input axes should be constant.
+INFO:  NNAPI is not recommended with this model as there are 6 partitions covering 95.0% of the nodes in the model. This will most likely result in worse performance than just using the CPU EP.
+INFO:  Model should perform well with NNAPI if modified to have fixed input shapes: NO
+INFO:  ================
+INFO:  
+INFO:  Checking CoreML NeuralNetwork
+INFO:  6 partitions with a total of 35/540 nodes can be handled by the CoreML NeuralNetwork EP.
+INFO:  	Partition sizes: [4, 2, 16, 9, 2, 2]
+INFO:  Unsupported nodes due to operator=33
+INFO:  	Unsupported ops: ai.onnx:ConstantOfShape,ai.onnx:ConvTranspose,ai.onnx:Expand,ai.onnx:Range,ai.onnx:Unsqueeze
+INFO:  	Caveats that have not been checked and may result in a node not actually being supported:  
+     ai.onnx:Conv:Only 1D/2D Conv is supported. Weights and bias should be constant.
+     ai.onnx:Gather:Input `indices` with scalar value is not supported.
+     ai.onnx:MatMul:Input B should be constant.
+     ai.onnx:MaxPool:Only 2D Pool is supported.
+     ai.onnx:Resize:4D input. `coordinate_transformation_mode` == `asymmetric`. `mode` == `linear` or `nearest`. `nearest_mode` == `floor`. `exclude_outside` == false `scales` or `sizes` must be constant.
+     ai.onnx:Shape:Attribute `start` with non-default value is not supported. Attribute `end` is not supported.
+     ai.onnx:Slice:Inputs `starts`, `ends`, `axes`, and `steps` should be constant. Empty slice is not supported.
+     ai.onnx:Split:If provided, `splits` must be constant.
+INFO:  Unsupported nodes due to input having a dynamic shape=486
+INFO:  CoreML NeuralNetwork is not recommended with this model as there are 6 partitions covering 6.5% of the nodes in the model. This will most likely result in worse performance than just using the CPU EP.
+INFO:  Model should perform well with CoreML NeuralNetwork as is: NO
+INFO:  --------
+INFO:  Checking if model will perform better if the dynamic shapes are fixed...
+INFO:  Partition information if the model was updated to make the shapes fixed:
+INFO:  5 partitions with a total of 507/540 nodes can be handled by the CoreML NeuralNetwork EP.
+INFO:  	Partition sizes: [163, 268, 49, 19, 8]
+INFO:  Unsupported nodes due to operator=33
+INFO:  	Unsupported ops: ai.onnx:ConstantOfShape,ai.onnx:ConvTranspose,ai.onnx:Expand,ai.onnx:Range,ai.onnx:Unsqueeze
+INFO:  	Caveats that have not been checked and may result in a node not actually being supported:  
+     ai.onnx:Conv:Only 1D/2D Conv is supported. Weights and bias should be constant.
+     ai.onnx:Gather:Input `indices` with scalar value is not supported.
+     ai.onnx:MatMul:Input B should be constant.
+     ai.onnx:MaxPool:Only 2D Pool is supported.
+     ai.onnx:Resize:4D input. `coordinate_transformation_mode` == `asymmetric`. `mode` == `linear` or `nearest`. `nearest_mode` == `floor`. `exclude_outside` == false `scales` or `sizes` must be constant.
+     ai.onnx:Shape:Attribute `start` with non-default value is not supported. Attribute `end` is not supported.
+     ai.onnx:Slice:Inputs `starts`, `ends`, `axes`, and `steps` should be constant. Empty slice is not supported.
+     ai.onnx:Split:If provided, `splits` must be constant.
+INFO:  CoreML NeuralNetwork is not recommended with this model as there are 5 partitions covering 93.9% of the nodes in the model. This will most likely result in worse performance than just using the CPU EP.
+INFO:  Model should perform well with CoreML NeuralNetwork if modified to have fixed input shapes: NO
+INFO:  ================
+INFO:  
+INFO:  Checking CoreML MLProgram
+INFO:  3 partitions with a total of 33/540 nodes can be handled by the CoreML MLProgram EP.
+INFO:  	Partition sizes: [7, 19, 7]
+INFO:  Unsupported nodes due to operator=27
+INFO:  	Unsupported ops: ai.onnx:ConstantOfShape,ai.onnx:Expand,ai.onnx:Gather,ai.onnx:Range
+INFO:  	Caveats that have not been checked and may result in a node not actually being supported:  
+     ai.onnx:Conv:Only 1D/2D Conv is supported. Bias if provided must be constant.
+     ai.onnx:ConvTranspose:Weight and bias must be constant. padding_type of SAME_UPPER/SAME_LOWER is not supported. kernel_shape must have default values. output_shape is not supported. output_padding must have default values.
+     ai.onnx:MatMul:Only support for transA == 0, alpha == 1.0 and beta == 1.0 is currently implemented.
+     ai.onnx:MaxPool:Only 2D Pool is supported currently. 3D and 5D support can be added if needed.
+     ai.onnx:Resize:See [resize_op_builder.cc](https://github.com/microsoft/onnxruntime/blob/main/onnxruntime/core/providers/coreml/builders/impl/resize_op_builder.cc) implementation. There are too many permutations to describe the valid combinations.
+     ai.onnx:Slice:starts/ends/axes/steps must be constant initializers.
+     ai.onnx:Split:If provided, `splits` must be constant.
+INFO:  Unsupported nodes due to input having a dynamic shape=486
+INFO:  CoreML MLProgram is not recommended with this model as there are 3 partitions covering 6.1% of the nodes in the model. This will most likely result in worse performance than just using the CPU EP.
+INFO:  Model should perform well with CoreML MLProgram as is: NO
+INFO:  --------
+INFO:  Checking if model will perform better if the dynamic shapes are fixed...
+INFO:  Partition information if the model was updated to make the shapes fixed:
+INFO:  5 partitions with a total of 513/540 nodes can be handled by the CoreML MLProgram EP.
+INFO:  	Partition sizes: [159, 264, 33, 34, 23]
+INFO:  Unsupported nodes due to operator=27
+INFO:  	Unsupported ops: ai.onnx:ConstantOfShape,ai.onnx:Expand,ai.onnx:Gather,ai.onnx:Range
+INFO:  	Caveats that have not been checked and may result in a node not actually being supported:  
+     ai.onnx:Conv:Only 1D/2D Conv is supported. Bias if provided must be constant.
+     ai.onnx:ConvTranspose:Weight and bias must be constant. padding_type of SAME_UPPER/SAME_LOWER is not supported. kernel_shape must have default values. output_shape is not supported. output_padding must have default values.
+     ai.onnx:MatMul:Only support for transA == 0, alpha == 1.0 and beta == 1.0 is currently implemented.
+     ai.onnx:MaxPool:Only 2D Pool is supported currently. 3D and 5D support can be added if needed.
+     ai.onnx:Resize:See [resize_op_builder.cc](https://github.com/microsoft/onnxruntime/blob/main/onnxruntime/core/providers/coreml/builders/impl/resize_op_builder.cc) implementation. There are too many permutations to describe the valid combinations.
+     ai.onnx:Slice:starts/ends/axes/steps must be constant initializers.
+     ai.onnx:Split:If provided, `splits` must be constant.
+INFO:  CoreML MLProgram is not recommended with this model as there are 5 partitions covering 95.0% of the nodes in the model. This will most likely result in worse performance than just using the CPU EP.
+INFO:  Model should perform well with CoreML MLProgram if modified to have fixed input shapes: NO
+INFO:  ================
+INFO:  
+INFO:  For optimal performance the model should be used with the CPU EP. 

@@ -1,0 +1,78 @@
+uniform float4x4 ViewProj;
+uniform texture2d image;
+uniform texture2d overlay_image;
+uniform texture2d mask_image;
+uniform float opacity;
+uniform float blend_mode;
+uniform float use_mask;
+uniform float region_mode;
+
+sampler_state linear_sampler {
+	Filter = Linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
+sampler_state point_sampler {
+	Filter = Point;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
+struct VertData {
+	float4 pos : POSITION;
+	float2 uv  : TEXCOORD0;
+};
+
+VertData VSDefault(VertData v_in)
+{
+	VertData v_out;
+	v_out.pos = mul(float4(v_in.pos.xyz, 1.0), ViewProj);
+	v_out.uv = v_in.uv;
+	return v_out;
+}
+
+float sample_mask(float2 uv)
+{
+	if (use_mask < 0.5)
+		return 1.0;
+	/* Rule masks are uploaded as GS_A8 (alpha-only), so alpha is the mask lane. */
+	return mask_image.Sample(point_sampler, uv).a;
+}
+
+float4 PSDraw(VertData v_in) : TARGET
+{
+	float4 base = image.Sample(linear_sampler, v_in.uv);
+	float4 over = overlay_image.Sample(linear_sampler, v_in.uv);
+
+	float mask = sample_mask(v_in.uv);
+	if (region_mode > 0.5)
+		mask = 1.0 - mask;
+
+	float blend_alpha = saturate(opacity) * mask;
+
+	float3 replace_rgb = lerp(base.rgb, over.rgb, blend_alpha);
+	float3 alpha_mix_rgb = lerp(base.rgb, over.rgb, blend_alpha * over.a);
+	float3 add_rgb = saturate(base.rgb + over.rgb * blend_alpha);
+	float3 multiply_rgb = lerp(base.rgb, base.rgb * over.rgb, blend_alpha);
+
+	float mode = blend_mode;
+	float3 out_rgb = replace_rgb;
+	if (mode > 0.5 && mode <= 1.5)
+		out_rgb = alpha_mix_rgb;
+	else if (mode > 1.5 && mode <= 2.5)
+		out_rgb = add_rgb;
+	else if (mode > 2.5)
+		out_rgb = multiply_rgb;
+
+	return float4(out_rgb, base.a);
+}
+
+technique Draw
+{
+	pass
+	{
+		vertex_shader = VSDefault(v_in);
+		pixel_shader = PSDraw(v_in);
+	}
+}

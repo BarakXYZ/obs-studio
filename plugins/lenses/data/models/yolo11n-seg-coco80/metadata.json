@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "lenses_schema": "lenses-model-v1",
+  "id": "yolo11n-seg-coco80",
+  "name": "YOLO11n Segmentation (COCO80)",
+  "size_tier": "n",
+  "task": "segment",
+  "source_model": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n-seg.onnx",
+  "model": {
+    "file": "model.onnx",
+    "sha256": "4fa0b870a6075e6e7fcb55fe5fe7cb10abc61c244a60fc2bbc563af28ee94f26",
+    "imgsz": [
+      640,
+      640
+    ],
+    "batch": 1,
+    "dynamic": false,
+    "static_input": true,
+    "static_output": true,
+    "supports_iobinding_static_outputs": true,
+    "runtime": "onnxruntime",
+    "opset": 21
+  },
+  "class_map_file": "class-map.json",
+  "class_count": 80,
+  "distribution": {
+    "bundled": true,
+    "license_note": "Review and comply with upstream model and dataset licenses before commercial distribution."
+  }
+}

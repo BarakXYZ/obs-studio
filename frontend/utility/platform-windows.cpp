@@ -178,6 +178,74 @@ void SetAlwaysOnTop(QWidget *window, bool enable)
 		     SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 }
 
+void SetWindowInputPassthrough(QWidget *window, bool enable)
+{
+	UNUSED_PARAMETER(window);
+	UNUSED_PARAMETER(enable);
+}
+
+void SetWindowCaptureExcluded(QWidget *window, bool exclude)
+{
+	UNUSED_PARAMETER(window);
+	UNUSED_PARAMETER(exclude);
+}
+
+bool SetWindowNonActivatingPanel(QWidget *window, bool enable)
+{
+	UNUSED_PARAMETER(window);
+	UNUSED_PARAMETER(enable);
+	return false;
+}
+
+uint64_t GetWindowCaptureExclusionId(QWidget *window)
+{
+	UNUSED_PARAMETER(window);
+	return 0;
+}
+
+bool IsPrimaryMouseButtonDown()
+{
+	return (GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0;
+}
+
+bool QueryWindowHitInfoAtMouseLocation(uint64_t belowWindowId, WindowHitInfo &hitInfo)
+{
+	UNUSED_PARAMETER(belowWindowId);
+	hitInfo = {};
+	return false;
+}
+
+bool ActivateWindowOwnerApplication(const WindowHitInfo &hitInfo)
+{
+	UNUSED_PARAMETER(hitInfo);
+	return false;
+}
+
+void DeactivateCurrentApplication()
+{
+}
+
+bool ReplayPrimaryClickAt(double globalX, double globalY, int targetProcessId)
+{
+	UNUSED_PARAMETER(globalX);
+	UNUSED_PARAMETER(globalY);
+	UNUSED_PARAMETER(targetProcessId);
+	return false;
+}
+
+bool PerformAccessibilityPressAt(double globalX, double globalY, int targetProcessId)
+{
+	UNUSED_PARAMETER(globalX);
+	UNUSED_PARAMETER(globalY);
+	UNUSED_PARAMETER(targetProcessId);
+	return false;
+}
+
+int GetFrontmostProcessId()
+{
+	return 0;
+}
+
 void SetProcessPriority(const char *priority)
 {
 	if (!priority)

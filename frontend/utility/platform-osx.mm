@@ -23,7 +23,11 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <AppKit/AppKit.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import <dlfcn.h>
+#import <CoreGraphics/CGWindow.h>
+
+#include <cstdio>
 
 using namespace std;
 
@@ -126,6 +130,299 @@ void SetAlwaysOnTop(QWidget *window, bool enable)
 
     window->setWindowFlags(flags);
     window->show();
+}
+
+void SetWindowInputPassthrough(QWidget *window, bool enable)
+{
+    if (!window)
+        return;
+
+    NSView *view = (__bridge NSView *)reinterpret_cast<void *>(window->winId());
+    if (!view || !view.window)
+        return;
+
+    [view.window setIgnoresMouseEvents:enable];
+}
+
+void SetWindowCaptureExcluded(QWidget *window, bool exclude)
+{
+    if (!window)
+        return;
+
+    NSView *view = (__bridge NSView *)reinterpret_cast<void *>(window->winId());
+    if (!view || !view.window)
+        return;
+
+    // Sharing None keeps this window out of capture APIs on macOS.
+    [view.window setSharingType:(exclude ? NSWindowSharingNone : NSWindowSharingReadOnly)];
+}
+
+bool SetWindowNonActivatingPanel(QWidget *window, bool enable)
+{
+    if (!window)
+        return false;
+
+    NSView *view = (__bridge NSView *)reinterpret_cast<void *>(window->winId());
+    if (!view || !view.window)
+        return false;
+
+    NSWindow *nativeWindow = view.window;
+    if (![nativeWindow isKindOfClass:[NSPanel class]])
+        return false;
+
+    NSUInteger styleMask = nativeWindow.styleMask;
+    if (enable)
+        styleMask |= NSWindowStyleMaskNonactivatingPanel;
+    else
+        styleMask &= ~NSWindowStyleMaskNonactivatingPanel;
+    [nativeWindow setStyleMask:styleMask];
+
+    if (enable) {
+        NSWindowCollectionBehavior behavior = nativeWindow.collectionBehavior;
+        behavior |= NSWindowCollectionBehaviorIgnoresCycle;
+        behavior |= NSWindowCollectionBehaviorFullScreenAuxiliary;
+        [nativeWindow setCollectionBehavior:behavior];
+    }
+
+    return true;
+}
+
+uint64_t GetWindowCaptureExclusionId(QWidget *window)
+{
+    if (!window)
+        return 0;
+
+    NSView *view = (__bridge NSView *)reinterpret_cast<void *>(window->winId());
+    if (!view || !view.window)
+        return 0;
+
+    // `windowNumber` maps to CoreGraphics window IDs used by ScreenCaptureKit.
+    return (uint64_t)view.window.windowNumber;
+}
+
+bool IsPrimaryMouseButtonDown()
+{
+    return CGEventSourceButtonState(kCGEventSourceStateCombinedSessionState, kCGMouseButtonLeft);
+}
+
+static void CopyCFStringToBuffer(CFTypeRef value, char *buffer, size_t size)
+{
+    if (!buffer || size == 0)
+        return;
+
+    buffer[0] = '\0';
+
+    if (!value || CFGetTypeID(value) != CFStringGetTypeID())
+        return;
+
+    CFStringGetCString((CFStringRef)value, buffer, size, kCFStringEncodingUTF8);
+}
+
+bool QueryWindowHitInfoAtMouseLocation(uint64_t belowWindowId, WindowHitInfo &hitInfo)
+{
+    hitInfo = {};
+
+    CGPoint eventPoint = CGPointZero;
+    CGEventRef currentEvent = CGEventCreate(NULL);
+    if (currentEvent) {
+        eventPoint = CGEventGetLocation(currentEvent);
+        CFRelease(currentEvent);
+    } else {
+        NSPoint fallback = [NSEvent mouseLocation];
+        eventPoint = CGPointMake(fallback.x, fallback.y);
+    }
+
+    hitInfo.globalMouseX = eventPoint.x;
+    hitInfo.globalMouseY = eventPoint.y;
+
+    NSPoint point = NSPointFromCGPoint(eventPoint);
+    NSInteger windowNumber = [NSWindow windowNumberAtPoint:point
+                                  belowWindowWithWindowNumber:(NSInteger)belowWindowId];
+    if (windowNumber <= 0)
+        return false;
+
+    hitInfo.windowId = (uint64_t)windowNumber;
+
+    CFArrayRef windowInfoArray =
+        CGWindowListCopyWindowInfo(kCGWindowListOptionIncludingWindow, (CGWindowID)windowNumber);
+    if (!windowInfoArray)
+        return true;
+
+    if (CFArrayGetCount(windowInfoArray) > 0) {
+        CFDictionaryRef info = (CFDictionaryRef)CFArrayGetValueAtIndex(windowInfoArray, 0);
+        if (info && CFGetTypeID(info) == CFDictionaryGetTypeID()) {
+            CopyCFStringToBuffer(CFDictionaryGetValue(info, kCGWindowOwnerName), hitInfo.ownerName,
+                                 sizeof(hitInfo.ownerName));
+            CopyCFStringToBuffer(CFDictionaryGetValue(info, kCGWindowName), hitInfo.windowTitle,
+                                 sizeof(hitInfo.windowTitle));
+
+            CFTypeRef ownerPIDValue = CFDictionaryGetValue(info, kCGWindowOwnerPID);
+            if (ownerPIDValue && CFGetTypeID(ownerPIDValue) == CFNumberGetTypeID()) {
+                int ownerPID = 0;
+                if (CFNumberGetValue((CFNumberRef)ownerPIDValue, kCFNumberIntType, &ownerPID)) {
+                    hitInfo.ownerProcessId = ownerPID;
+                    hitInfo.ownerIsCurrentProcess = ownerPID == (int)[[NSProcessInfo processInfo] processIdentifier];
+                    NSRunningApplication *frontmost = [[NSWorkspace sharedWorkspace] frontmostApplication];
+                    hitInfo.ownerIsFrontmostApplication =
+                        frontmost && ownerPID == (int)[frontmost processIdentifier];
+                }
+            }
+        }
+    }
+
+    CFRelease(windowInfoArray);
+    return true;
+}
+
+bool ActivateWindowOwnerApplication(const WindowHitInfo &hitInfo)
+{
+    if (hitInfo.ownerProcessId <= 0 || hitInfo.ownerIsCurrentProcess)
+        return false;
+
+    NSRunningApplication *app =
+        [NSRunningApplication runningApplicationWithProcessIdentifier:(pid_t)hitInfo.ownerProcessId];
+    if (!app)
+        return false;
+
+    return [app activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)];
+}
+
+void DeactivateCurrentApplication()
+{
+    [NSApp deactivate];
+}
+
+bool ReplayPrimaryClickAt(double globalX, double globalY, int targetProcessId)
+{
+    static bool warnedMissingA11y = false;
+    if (!AXIsProcessTrusted()) {
+        if (!warnedMissingA11y) {
+            warnedMissingA11y = true;
+            blog(LOG_WARNING,
+                 "[lenses] Activation assist requires Accessibility permission to replay clicks");
+        }
+        return false;
+    }
+
+    CGPoint point = CGPointMake(globalX, globalY);
+    CGEventSourceRef source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+    CGEventRef down = CGEventCreateMouseEvent(source, kCGEventLeftMouseDown, point, kCGMouseButtonLeft);
+    CGEventRef up = CGEventCreateMouseEvent(source, kCGEventLeftMouseUp, point, kCGMouseButtonLeft);
+
+    if (targetProcessId > 0) {
+        if (down)
+            CGEventPostToPid((pid_t)targetProcessId, down);
+        if (up)
+            CGEventPostToPid((pid_t)targetProcessId, up);
+    } else {
+        if (down)
+            CGEventPost(kCGHIDEventTap, down);
+        if (up)
+            CGEventPost(kCGHIDEventTap, up);
+    }
+
+    if (down)
+        CFRelease(down);
+    if (up)
+        CFRelease(up);
+    if (source)
+        CFRelease(source);
+
+    return down && up;
+}
+
+static bool ElementSupportsPressAction(AXUIElementRef element)
+{
+    if (!element)
+        return false;
+
+    CFArrayRef actions = nullptr;
+    const AXError copyResult = AXUIElementCopyActionNames(element, &actions);
+    if (copyResult != kAXErrorSuccess || !actions)
+        return false;
+
+    bool hasPress = false;
+    const CFIndex actionCount = CFArrayGetCount(actions);
+    for (CFIndex i = 0; i < actionCount; i++) {
+        CFTypeRef action = CFArrayGetValueAtIndex(actions, i);
+        if (action && CFGetTypeID(action) == CFStringGetTypeID() &&
+            CFStringCompare((CFStringRef)action, kAXPressAction, 0) == kCFCompareEqualTo) {
+            hasPress = true;
+            break;
+        }
+    }
+
+    CFRelease(actions);
+    return hasPress;
+}
+
+static AXUIElementRef CopyParentElement(AXUIElementRef element)
+{
+    if (!element)
+        return nullptr;
+
+    CFTypeRef parent = nullptr;
+    const AXError parentResult = AXUIElementCopyAttributeValue(element, kAXParentAttribute, &parent);
+    if (parentResult != kAXErrorSuccess || !parent)
+        return nullptr;
+
+    if (CFGetTypeID(parent) != AXUIElementGetTypeID()) {
+        CFRelease(parent);
+        return nullptr;
+    }
+
+    return (AXUIElementRef)parent;
+}
+
+bool PerformAccessibilityPressAt(double globalX, double globalY, int targetProcessId)
+{
+    if (targetProcessId <= 0 || !AXIsProcessTrusted())
+        return false;
+
+    AXUIElementRef systemWide = AXUIElementCreateSystemWide();
+    if (!systemWide)
+        return false;
+
+    AXUIElementRef elementAtPoint = nullptr;
+    const AXError hitTestResult =
+        AXUIElementCopyElementAtPosition(systemWide, (float)globalX, (float)globalY, &elementAtPoint);
+    CFRelease(systemWide);
+    if (hitTestResult != kAXErrorSuccess || !elementAtPoint)
+        return false;
+
+    AXUIElementRef current = elementAtPoint;
+    bool handled = false;
+
+    for (int depth = 0; current && depth < 8; depth++) {
+        pid_t elementPid = 0;
+        if (AXUIElementGetPid(current, &elementPid) != kAXErrorSuccess)
+            elementPid = 0;
+
+        if ((int)elementPid == targetProcessId && ElementSupportsPressAction(current)) {
+            const AXError pressResult = AXUIElementPerformAction(current, kAXPressAction);
+            handled = pressResult == kAXErrorSuccess;
+            break;
+        }
+
+        AXUIElementRef parent = CopyParentElement(current);
+        if (current != elementAtPoint)
+            CFRelease(current);
+        current = parent;
+    }
+
+    if (current && current != elementAtPoint)
+        CFRelease(current);
+    CFRelease(elementAtPoint);
+
+    return handled;
+}
+
+int GetFrontmostProcessId()
+{
+    NSRunningApplication *frontmost = [[NSWorkspace sharedWorkspace] frontmostApplication];
+    if (!frontmost)
+        return 0;
+    return (int)[frontmost processIdentifier];
 }
 
 bool SetDisplayAffinitySupported(void)

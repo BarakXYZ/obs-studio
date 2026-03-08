@@ -58,7 +58,7 @@ public:
 
 	OBSSource GetSource();
 	ProjectorType GetProjectorType();
-	int GetMonitor();
+	int GetMonitor() const;
 	static void UpdateMultiviewProjectors();
 	void SetHideCursor();
 

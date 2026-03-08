@@ -20,6 +20,20 @@
 #include "OBSBasic.hpp"
 #include "OBSProjector.hpp"
 
+static bool IsKnownProjectorType(int typeValue)
+{
+	switch (static_cast<ProjectorType>(typeValue)) {
+	case ProjectorType::Source:
+	case ProjectorType::Scene:
+	case ProjectorType::Preview:
+	case ProjectorType::StudioProgram:
+	case ProjectorType::Multiview:
+		return true;
+	default:
+		return false;
+	}
+}
+
 obs_data_array_t *OBSBasic::SaveProjectors()
 {
 	obs_data_array_t *savedProjectors = obs_data_array_create();
@@ -68,9 +82,15 @@ void OBSBasic::LoadSavedProjectors(obs_data_array_t *array)
 	for (size_t i = 0; i < num; i++) {
 		OBSDataAutoRelease data = obs_data_array_item(array, i);
 		SavedProjectorInfo info = {};
+		const int typeValue = (int)obs_data_get_int(data, "type");
+
+		if (!IsKnownProjectorType(typeValue)) {
+			blog(LOG_WARNING, "[lenses] Skipping unknown saved projector type: %d", typeValue);
+			continue;
+		}
 
 		info.monitor = obs_data_get_int(data, "monitor");
-		info.type = static_cast<ProjectorType>(obs_data_get_int(data, "type"));
+		info.type = static_cast<ProjectorType>(typeValue);
 		info.geometry = std::string(obs_data_get_string(data, "geometry"));
 		info.name = std::string(obs_data_get_string(data, "name"));
 		info.alwaysOnTop = obs_data_get_bool(data, "alwaysOnTop");

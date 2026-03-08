@@ -22,6 +22,8 @@
 #include <QStackedWidget>
 #include <QDir>
 #include <QGroupBox>
+#include <QToolButton>
+#include <QVBoxLayout>
 #include <QObject>
 #include <QDesktopServices>
 #include <QUuid>
@@ -1444,13 +1446,59 @@ void OBSPropertiesView::AddGroup(obs_property_t *prop, QFormLayout *layout)
 	bool val = obs_data_get_bool(settings, name);
 	const char *desc = obs_property_description(prop);
 	enum obs_group_type type = obs_property_group_type(prop);
+	const bool enabled = obs_property_enabled(prop);
+	const bool has_state = obs_data_has_user_value(settings, name) || obs_data_has_default_value(settings, name);
+
+	if (type == OBS_GROUP_NORMAL && has_state) {
+		QWidget *section = new QWidget();
+		QVBoxLayout *sectionLayout = new QVBoxLayout(section);
+		sectionLayout->setContentsMargins(0, 0, 0, 0);
+		sectionLayout->setSpacing(0);
+
+		QToolButton *toggle = new QToolButton();
+		toggle->setCheckable(true);
+		toggle->setChecked(val);
+		toggle->setArrowType(val ? Qt::DownArrow : Qt::RightArrow);
+		toggle->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+		toggle->setText(QT_UTF8(desc));
+		toggle->setAutoRaise(true);
+		toggle->setEnabled(enabled);
+		toggle->setAccessibleName("group");
+		toggle->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+		QWidget *contentWidget = new QWidget();
+		contentWidget->setVisible(val);
+		QFormLayout *subLayout = new QFormLayout();
+		subLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+		contentWidget->setLayout(subLayout);
+
+		obs_properties_t *content = obs_property_group_content(prop);
+		obs_property_t *el = obs_properties_first(content);
+		while (el != nullptr) {
+			AddProperty(el, subLayout);
+			obs_property_next(&el);
+		}
+
+		sectionLayout->addWidget(toggle);
+		sectionLayout->addWidget(contentWidget);
+		layout->setWidget(layout->rowCount(), QFormLayout::ItemRole::SpanningRole, section);
+
+		WidgetInfo *info = new WidgetInfo(this, prop, toggle);
+		children.emplace_back(info);
+
+		connect(toggle, &QToolButton::toggled, contentWidget, &QWidget::setVisible);
+		connect(toggle, &QToolButton::toggled, toggle,
+			[toggle](bool expanded) { toggle->setArrowType(expanded ? Qt::DownArrow : Qt::RightArrow); });
+		connect(toggle, &QToolButton::toggled, info, &WidgetInfo::ControlChanged);
+		return;
+	}
 
 	// Create GroupBox
 	QGroupBox *groupBox = new QGroupBox(QT_UTF8(desc));
 	groupBox->setCheckable(type == OBS_GROUP_CHECKABLE);
 	groupBox->setChecked(groupBox->isCheckable() ? val : true);
 	groupBox->setAccessibleName("group");
-	groupBox->setEnabled(obs_property_enabled(prop));
+	groupBox->setEnabled(enabled);
 
 	// Create Layout and build content
 	QFormLayout *subLayout = new QFormLayout();
@@ -1900,8 +1948,14 @@ bool WidgetInfo::FontChanged(const char *setting)
 
 void WidgetInfo::GroupChanged(const char *setting)
 {
-	QGroupBox *groupbox = static_cast<QGroupBox *>(widget);
-	obs_data_set_bool(view->settings, setting, groupbox->isCheckable() ? groupbox->isChecked() : true);
+	if (QGroupBox *groupbox = qobject_cast<QGroupBox *>(widget)) {
+		obs_data_set_bool(view->settings, setting, groupbox->isCheckable() ? groupbox->isChecked() : true);
+		return;
+	}
+
+	if (QAbstractButton *button = qobject_cast<QAbstractButton *>(widget)) {
+		obs_data_set_bool(view->settings, setting, button->isChecked());
+	}
 }
 
 void WidgetInfo::EditableListChanged()

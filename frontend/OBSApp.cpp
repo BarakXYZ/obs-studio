@@ -373,6 +373,10 @@ void OBSApp::InitUserConfigDefaults()
 	config_set_default_bool(userConfig, "BasicWindow", "ShowContextToolbars", true);
 	config_set_default_bool(userConfig, "BasicWindow", "StudioModeLabels", true);
 	config_set_default_bool(userConfig, "BasicWindow", "SideDocks", true);
+	config_set_default_bool(userConfig, "BasicWindow", "LensesMainMirrorMode", false);
+	config_set_default_bool(userConfig, "BasicWindow", "LensesMainMirrorFocusMode", false);
+	config_set_default_string(userConfig, "BasicWindow", "LensesMirrorSceneUUID", "");
+	config_set_default_string(userConfig, "BasicWindow", "LensesMirrorSourceUUID", "");
 
 	config_set_default_bool(userConfig, "BasicWindow", "VerticalVolumeControl", true);
 

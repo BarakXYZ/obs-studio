@@ -25,6 +25,7 @@
 #include "OBSBasicStats.hpp"
 #include "plugin-manager/PluginManager.hpp"
 
+#include <components/LensesFocusDragHandles.hpp>
 #include <obs-module.h>
 
 #ifdef YOUTUBE_ENABLED
@@ -57,12 +58,16 @@
 #include <qt-wrappers.hpp>
 
 #include <QActionGroup>
+#include <QGuiApplication>
+#include <QMenu>
 #include <QThread>
+#include <QTimer>
 #include <QWidgetAction>
 
 #ifdef _WIN32
 #include <sstream>
 #endif
+#include <algorithm>
 #include <string>
 #include <unordered_set>
 
@@ -74,6 +79,30 @@
 #include "moc_OBSBasic.cpp"
 
 using namespace std;
+
+namespace {
+constexpr const char *kLensesMainMirrorDisplayConfigKey = "LensesMainMirrorDisplayIndex";
+constexpr const char *kLensesMainMirrorClickAssistConfigKey = "LensesMainMirrorClickAssist";
+
+int GetDefaultLensesMainMirrorDisplayIndex(const QWidget *previewWidget, QWindow *windowHandle)
+{
+	const QList<QScreen *> screens = QGuiApplication::screens();
+	if (screens.isEmpty())
+		return 0;
+
+	QScreen *targetScreen = windowHandle ? windowHandle->screen() : nullptr;
+	if (!targetScreen && previewWidget) {
+		targetScreen = previewWidget->screen();
+		if (!targetScreen)
+			targetScreen = QGuiApplication::screenAt(previewWidget->mapToGlobal(previewWidget->rect().center()));
+	}
+	if (!targetScreen)
+		targetScreen = QGuiApplication::primaryScreen();
+
+	const int index = screens.indexOf(targetScreen);
+	return index >= 0 ? index : 0;
+}
+} // namespace
 
 extern bool portable_mode;
 extern bool disable_3p_plugins;
@@ -246,6 +275,41 @@ OBSBasic::OBSBasic(QWidget *parent) : OBSMainWindow(parent), undo_s(ui), ui(new 
 	ui->setupUi(this);
 	ui->previewDisabledWidget->setVisible(false);
 
+	actionLensesMainMirrorMode = new QAction(QTStr("Lenses.MainWindow.MirrorMode"), this);
+	actionLensesMainMirrorMode->setCheckable(true);
+	actionLensesMainMirrorMode->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M));
+	connect(actionLensesMainMirrorMode, &QAction::triggered, this, &OBSBasic::ToggleLensesMainMirrorMode);
+
+	actionLensesMainMirrorFocusMode = new QAction(QTStr("Lenses.MainWindow.MirrorFocusMode"), this);
+	actionLensesMainMirrorFocusMode->setCheckable(true);
+	actionLensesMainMirrorFocusMode->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
+	connect(actionLensesMainMirrorFocusMode, &QAction::triggered, this, &OBSBasic::ToggleLensesMainMirrorFocusMode);
+
+	actionLensesMainMirrorFilters = new QAction(QTStr("Lenses.MainWindow.MirrorFilters"), this);
+	connect(actionLensesMainMirrorFilters, &QAction::triggered, this, &OBSBasic::OpenLensesMainMirrorFilters);
+
+	actionLensesMainMirrorClickAssist = new QAction(QTStr("Lenses.MainWindow.MirrorClickAssist"), this);
+	actionLensesMainMirrorClickAssist->setCheckable(true);
+	connect(actionLensesMainMirrorClickAssist, &QAction::triggered, this,
+		&OBSBasic::ToggleLensesMainMirrorClickAssist);
+
+	lensesMainMirrorDisplayActions = new QActionGroup(this);
+	lensesMainMirrorDisplayActions->setExclusive(true);
+
+	lensesMainMirrorRetryTimer = new QTimer(this);
+	lensesMainMirrorRetryTimer->setSingleShot(true);
+	connect(lensesMainMirrorRetryTimer, &QTimer::timeout, this, [this]() {
+		if (!lensesMainMirrorEnabled)
+			return;
+
+		EnsureLensesMainMirrorWindow();
+		EnsureLensesMainMirrorSource();
+		UpdateLensesMainMirrorSourceSettings();
+		UpdateLensesMainMirrorWindowTarget();
+	});
+
+	UpdateLensesMainMirrorActionsState();
+
 	/* Set up streaming connections */
 	connect(
 		this, &OBSBasic::StreamingStarting, this, [this] { this->streamingStarting = true; },
@@ -396,12 +460,31 @@ OBSBasic::OBSBasic(QWidget *parent) : OBSMainWindow(parent), undo_s(ui), ui(new 
 
 		UpdateContextBarVisibility();
 		UpdatePreviewControls();
+		UpdateLensesMainMirrorDragHandlesLayout();
+		UpdateLensesMainMirrorWindowTarget();
 		dpi = devicePixelRatioF();
 	};
 	dpi = devicePixelRatioF();
 
 	connect(windowHandle(), &QWindow::screenChanged, this, displayResize);
+	connect(windowHandle(), &QWindow::screenChanged, this,
+		[this](QScreen *) { RecoverLensesMainMirrorPipeline(false); });
 	connect(ui->preview, &OBSQTDisplay::DisplayResized, this, displayResize);
+
+	QGuiApplication *guiApp = qobject_cast<QGuiApplication *>(QCoreApplication::instance());
+	if (guiApp) {
+		auto handleScreenTopologyChanged = [this]() {
+			RebuildLensesMainMirrorDisplayMenu();
+			RecoverLensesMainMirrorPipeline(false);
+			UpdateLensesMainMirrorWindowTarget();
+		};
+		connect(guiApp, &QGuiApplication::screenAdded, this,
+			[handleScreenTopologyChanged](QScreen *) { handleScreenTopologyChanged(); });
+		connect(guiApp, &QGuiApplication::screenRemoved, this,
+			[handleScreenTopologyChanged](QScreen *) { handleScreenTopologyChanged(); });
+		connect(guiApp, &QGuiApplication::primaryScreenChanged, this,
+			[handleScreenTopologyChanged](QScreen *) { handleScreenTopologyChanged(); });
+	}
 
 	/* TODO: Move these into window-basic-preview */
 	/* Preview Scaling label */
@@ -973,6 +1056,76 @@ static inline void LogEncoders()
 	list_encoders(OBS_ENCODER_AUDIO);
 }
 
+void OBSBasic::RebuildLensesMainMirrorDisplayMenu()
+{
+	if (!lensesMainMirrorDisplayMenu)
+		return;
+
+	lensesMainMirrorDisplayMenu->clear();
+
+	const QList<QString> displays = GetProjectorMenuMonitorsFormatted();
+	const int oldIndex = lensesMainMirrorDisplayIndex;
+	if (displays.isEmpty()) {
+		lensesMainMirrorDisplayIndex = 0;
+		QAction *unavailable = lensesMainMirrorDisplayMenu->addAction(QTStr("Lenses.MainWindow.MirrorDisplay.None"));
+		unavailable->setEnabled(false);
+	} else {
+		const int displayCount = static_cast<int>(displays.size());
+		lensesMainMirrorDisplayIndex = std::clamp(lensesMainMirrorDisplayIndex, 0, displayCount - 1);
+		for (int i = 0; i < displayCount; i++) {
+			QAction *action = lensesMainMirrorDisplayMenu->addAction(displays[i]);
+			action->setCheckable(true);
+			action->setProperty("monitor", i);
+			action->setActionGroup(lensesMainMirrorDisplayActions);
+			action->setChecked(i == lensesMainMirrorDisplayIndex);
+			connect(action, &QAction::triggered, this, &OBSBasic::SelectLensesMainMirrorDisplay);
+		}
+	}
+
+	if (oldIndex != lensesMainMirrorDisplayIndex) {
+		config_set_int(App()->GetUserConfig(), "BasicWindow", kLensesMainMirrorDisplayConfigKey,
+			       lensesMainMirrorDisplayIndex);
+		if (lensesMainMirrorEnabled)
+			UpdateLensesMainMirrorSourceSettings(true);
+	}
+
+	UpdateLensesMainMirrorActionsState();
+}
+
+void OBSBasic::SelectLensesMainMirrorDisplay()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	if (!action)
+		return;
+
+	bool ok = false;
+	const int requestedIndex = action->property("monitor").toInt(&ok);
+	if (!ok)
+		return;
+
+	const int screenCount = QGuiApplication::screens().size();
+	if (screenCount <= 0)
+		return;
+
+	const int clampedIndex = std::clamp(requestedIndex, 0, screenCount - 1);
+	if (lensesMainMirrorDisplayIndex == clampedIndex) {
+		UpdateLensesMainMirrorActionsState();
+		return;
+	}
+
+	lensesMainMirrorDisplayIndex = clampedIndex;
+	config_set_int(App()->GetUserConfig(), "BasicWindow", kLensesMainMirrorDisplayConfigKey,
+		       lensesMainMirrorDisplayIndex);
+
+	if (lensesMainMirrorEnabled) {
+		EnsureLensesMainMirrorSource();
+		UpdateLensesMainMirrorSourceSettings(true);
+	}
+	UpdateLensesMainMirrorWindowTarget();
+	UpdateLensesMainMirrorActionsState();
+	emit ui->preview->DisplayResized();
+}
+
 void OBSBasic::OBSInit()
 {
 	ProfileScope("OBSBasic::OBSInit");
@@ -1127,6 +1280,17 @@ void OBSBasic::OBSInit()
 	loaded = true;
 
 	previewEnabled = config_get_bool(App()->GetUserConfig(), "BasicWindow", "PreviewEnabled");
+	const bool mirrorEnabled = config_get_bool(App()->GetUserConfig(), "BasicWindow", "LensesMainMirrorMode");
+	lensesMainMirrorClickAssist =
+		!config_has_user_value(App()->GetUserConfig(), "BasicWindow", kLensesMainMirrorClickAssistConfigKey) ||
+		config_get_bool(App()->GetUserConfig(), "BasicWindow", kLensesMainMirrorClickAssistConfigKey);
+	if (config_has_user_value(App()->GetUserConfig(), "BasicWindow", kLensesMainMirrorDisplayConfigKey)) {
+		lensesMainMirrorDisplayIndex =
+			static_cast<int>(config_get_int(App()->GetUserConfig(), "BasicWindow",
+						       kLensesMainMirrorDisplayConfigKey));
+	} else {
+		lensesMainMirrorDisplayIndex = GetDefaultLensesMainMirrorDisplayIndex(ui->preview, windowHandle());
+	}
 
 	if (!previewEnabled && !IsPreviewProgramMode())
 		QMetaObject::invokeMethod(this, "EnablePreviewDisplay", Qt::QueuedConnection,
@@ -1289,9 +1453,21 @@ void OBSBasic::OBSInit()
 	/* Add multiview menu      */
 
 	ui->viewMenu->addSeparator();
+	lensesMainMirrorDisplayMenu = new QMenu(QTStr("Lenses.MainWindow.MirrorDisplay"), this);
+	ui->viewMenu->insertAction(ui->actionAlwaysOnTop, actionLensesMainMirrorMode);
+	ui->viewMenu->insertAction(ui->actionAlwaysOnTop, actionLensesMainMirrorFocusMode);
+	ui->viewMenu->insertMenu(ui->actionAlwaysOnTop, lensesMainMirrorDisplayMenu);
+	ui->viewMenu->insertAction(ui->actionAlwaysOnTop, actionLensesMainMirrorFilters);
+	ui->viewMenu->insertAction(ui->actionAlwaysOnTop, actionLensesMainMirrorClickAssist);
+	ui->viewMenu->insertSeparator(ui->actionAlwaysOnTop);
+	RebuildLensesMainMirrorDisplayMenu();
 
-	connect(ui->viewMenu->menuAction(), &QAction::hovered, this, &OBSBasic::updateMultiviewProjectorMenu);
-	OBSBasic::updateMultiviewProjectorMenu();
+	auto updateProjectorMenus = [this]() { updateMultiviewProjectorMenu(); };
+	connect(ui->viewMenu->menuAction(), &QAction::hovered, this, updateProjectorMenus);
+	updateProjectorMenus();
+
+	SetLensesMainMirrorEnabled(mirrorEnabled);
+	SetLensesMainMirrorFocusMode(false);
 
 	ui->sources->UpdateIcons();
 
@@ -1446,6 +1622,7 @@ void OBSBasic::applicationShutdown() noexcept
 	delete remux;
 
 	obs_display_remove_draw_callback(ui->preview->GetDisplay(), OBSBasic::RenderMain, this);
+	ReleaseLensesMainMirrorSource();
 
 	obs_enter_graphics();
 	gs_vertexbuffer_destroy(box);
@@ -1764,6 +1941,9 @@ void OBSBasic::changeEvent(QEvent *event)
 				EnablePreviewDisplay(true);
 		}
 	}
+
+	UpdateLensesMainMirrorDragHandlesLayout();
+	UpdateLensesMainMirrorWindowTarget();
 }
 
 void OBSBasic::GetFPSCommon(uint32_t &num, uint32_t &den) const
@@ -1869,6 +2049,12 @@ void OBSBasic::saveAll()
 	config_set_bool(App()->GetUserConfig(), "BasicWindow", "SwapScenesMode", swapScenesMode);
 	config_set_bool(App()->GetUserConfig(), "BasicWindow", "EditPropertiesMode", editPropertiesMode);
 	config_set_bool(App()->GetUserConfig(), "BasicWindow", "PreviewProgramMode", IsPreviewProgramMode());
+	config_set_bool(App()->GetUserConfig(), "BasicWindow", "LensesMainMirrorMode", lensesMainMirrorEnabled);
+	config_set_bool(App()->GetUserConfig(), "BasicWindow", "LensesMainMirrorFocusMode", lensesMainMirrorFocusMode);
+	config_set_bool(App()->GetUserConfig(), "BasicWindow", kLensesMainMirrorClickAssistConfigKey,
+			lensesMainMirrorClickAssist);
+	config_set_int(App()->GetUserConfig(), "BasicWindow", kLensesMainMirrorDisplayConfigKey,
+		       lensesMainMirrorDisplayIndex);
 	config_set_bool(App()->GetUserConfig(), "BasicWindow", "DocksLocked", ui->lockDocks->isChecked());
 	config_set_bool(App()->GetUserConfig(), "BasicWindow", "SideDocks", ui->sideDocks->isChecked());
 	config_save_safe(App()->GetUserConfig(), "tmp", nullptr);
@@ -2122,9 +2308,14 @@ void OBSBasic::SetDisplayAffinity(QWindow *window)
 		return;
 
 	bool hideFromCapture = config_get_bool(App()->GetUserConfig(), "BasicWindow", "HideOBSWindowsFromCapture");
+	bool isLensesMirrorWindow = window->property("isOBSLensesMirrorWindow") == true;
 
-	// Don't hide projectors, those are designed to be visible / captured
-	if (window->property("isOBSProjectorWindow") == true)
+	// Lenses mirror windows should remain excluded from capture to avoid recursion.
+	if (isLensesMirrorWindow)
+		hideFromCapture = true;
+
+	// Don't hide projectors by default, those are designed to be visible / captured.
+	if (window->property("isOBSProjectorWindow") == true && !isLensesMirrorWindow)
 		return;
 
 #ifdef _WIN32

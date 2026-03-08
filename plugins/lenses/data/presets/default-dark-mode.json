@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "metadata": {
+    "id": "default-dark-mode",
+    "name": "Default Dark Mode"
+  },
+  "model": {
+    "name": "synthetic-mask-demo"
+  },
+  "runtime": {
+    "ai_fps_target": 12,
+    "provider": "noop"
+  },
+  "rules": [
+    {
+      "id": "people-invert",
+      "enabled": true,
+      "priority": 200,
+      "selector": {
+        "class_ids": [0],
+        "min_confidence": 0.0
+      },
+      "region_mode": "include",
+      "filter_chain": "invert",
+      "blend_mode": "replace",
+      "opacity": 1.0
+    },
+    {
+      "id": "cars-grayscale",
+      "enabled": true,
+      "priority": 180,
+      "selector": {
+        "class_ids": [2],
+        "min_confidence": 0.0
+      },
+      "region_mode": "include",
+      "filter_chain": "grayscale",
+      "blend_mode": "replace",
+      "opacity": 1.0
+    }
+  ],
+  "default_rule": {
+    "id": "default-solid-red",
+    "enabled": true,
+    "filter_chain": "solid-red",
+    "blend_mode": "replace"
+  },
+  "legacy": {
+    "invert_enabled": true,
+    "invert_strength": 1.0,
+    "invert_region_threshold": 0.65,
+    "invert_region_softness": 0.25,
+    "invert_region_coverage": 0.72,
+    "white_bias": 0.65,
+    "white_softness": 0.25,
+    "white_region_floor": 0.72
+  }
+}

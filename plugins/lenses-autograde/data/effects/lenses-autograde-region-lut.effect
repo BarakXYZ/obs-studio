@@ -1,0 +1,100 @@
+uniform float4x4 ViewProj;
+uniform texture2d image;
+uniform texture3d clut_3d;
+uniform float clut_amount;
+uniform float3 clut_scale;
+uniform float3 clut_offset;
+uniform float4 region_rect;
+uniform float region_enabled;
+uniform float region_feather;
+
+sampler_state textureSampler {
+	Filter = Linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
+	AddressW = Clamp;
+};
+
+struct VertDataIn {
+	float4 pos : POSITION;
+	float2 uv : TEXCOORD0;
+};
+
+struct VertDataOut {
+	float4 pos : POSITION;
+	float2 uv : TEXCOORD0;
+};
+
+VertDataOut VSDefault(VertDataIn v_in)
+{
+	VertDataOut vert_out;
+	vert_out.uv = v_in.uv;
+	vert_out.pos = mul(float4(v_in.pos.xyz, 1.0), ViewProj);
+	return vert_out;
+}
+
+float srgb_linear_to_nonlinear_channel(float u)
+{
+	return (u <= 0.0031308) ? (12.92 * u) : ((1.055 * pow(u, 1.0 / 2.4)) - 0.055);
+}
+
+float3 srgb_linear_to_nonlinear(float3 v)
+{
+	return float3(srgb_linear_to_nonlinear_channel(v.r),
+		      srgb_linear_to_nonlinear_channel(v.g),
+		      srgb_linear_to_nonlinear_channel(v.b));
+}
+
+float compute_region_mask(float2 uv)
+{
+	float2 min_uv;
+	float2 max_uv;
+	float2 edge;
+	float distance_to_edge;
+
+	if (region_enabled < 0.5)
+		return 1.0;
+
+	min_uv = region_rect.xy;
+	max_uv = region_rect.xy + region_rect.zw;
+	edge = min(uv - min_uv, max_uv - uv);
+	distance_to_edge = min(edge.x, edge.y);
+	if (distance_to_edge <= 0.0)
+		return 0.0;
+	if (region_feather <= 0.000001)
+		return 1.0;
+	return saturate(distance_to_edge / region_feather);
+}
+
+float4 LUTAmount3DRegion(VertDataOut v_in) : TARGET
+{
+	float4 textureColor;
+	float3 nonlinear;
+	float3 clut_uvw;
+	float3 luttedColor;
+	float mask;
+	float blend_amount;
+
+	textureColor = image.Sample(textureSampler, v_in.uv);
+	mask = compute_region_mask(v_in.uv);
+	blend_amount = saturate(clut_amount * mask);
+
+	textureColor.rgb *= (textureColor.a > 0.0) ? (1.0 / textureColor.a) : 0.0;
+	nonlinear = srgb_linear_to_nonlinear(textureColor.rgb);
+
+	clut_uvw = nonlinear * clut_scale + clut_offset;
+	luttedColor = clut_3d.Sample(textureSampler, clut_uvw).rgb;
+	textureColor.rgb = lerp(textureColor.rgb, luttedColor, blend_amount);
+
+	textureColor.rgb *= textureColor.a;
+	return textureColor;
+}
+
+technique DrawAmount3DRegion
+{
+	pass
+	{
+		vertex_shader = VSDefault(v_in);
+		pixel_shader = LUTAmount3DRegion(v_in);
+	}
+}

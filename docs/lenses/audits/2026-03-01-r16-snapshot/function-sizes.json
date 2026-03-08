@@ -1,0 +1,2425 @@
+{
+  "plugin_root": "plugins/lenses",
+  "function_count": 265,
+  "total_function_lines": 7377,
+  "average_function_lines": 27.837735849056603,
+  "top_functions": [
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_filter_properties",
+      "start_line": 263,
+      "end_line": 581,
+      "lines": 319
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "RunInference",
+      "start_line": 570,
+      "end_line": 808,
+      "lines": 239
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "WorkerLoop",
+      "start_line": 811,
+      "end_line": 994,
+      "lines": 184
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-ai-submit.c",
+      "name": "lenses_submit_ai_frame",
+      "start_line": 76,
+      "end_line": 219,
+      "lines": 144
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-provider.cpp",
+      "name": "ConfigureExecutionProviders",
+      "start_line": 23,
+      "end_line": 163,
+      "lines": 141
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "ResizeBGRAtoRGBFloatAccelerate",
+      "start_line": 217,
+      "end_line": 354,
+      "lines": 138
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_update",
+      "start_line": 216,
+      "end_line": 346,
+      "lines": 131
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "InitializeSession",
+      "start_line": 391,
+      "end_line": 509,
+      "lines": 119
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_apply_runtime_config",
+      "start_line": 394,
+      "end_line": 509,
+      "lines": 116
+    },
+    {
+      "file": "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp",
+      "name": "ByteTrackTracker::Update",
+      "start_line": 86,
+      "end_line": 199,
+      "lines": 114
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_build_debug_overlay",
+      "start_line": 218,
+      "end_line": 327,
+      "lines": 110
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-layout.cpp",
+      "name": "DecodeDetections",
+      "start_line": 92,
+      "end_line": 196,
+      "lines": 105
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_render",
+      "start_line": 92,
+      "end_line": 186,
+      "lines": 95
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-session-io.cpp",
+      "name": "InitializeSessionModelIo",
+      "start_line": 17,
+      "end_line": 102,
+      "lines": 86
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_collect_manifest_package",
+      "start_line": 243,
+      "end_line": 328,
+      "lines": 86
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_policy_write_legacy_preset",
+      "start_line": 470,
+      "end_line": 553,
+      "lines": 84
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "Start",
+      "start_line": 88,
+      "end_line": 170,
+      "lines": 83
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-iobinding.cpp",
+      "name": "InitializeIoBindingSetup",
+      "start_line": 34,
+      "end_line": 114,
+      "lines": 81
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/backend-resolver.cpp",
+      "name": "ResolveBackendSelection",
+      "start_line": 78,
+      "end_line": 155,
+      "lines": 78
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-diagnostics.c",
+      "name": "lenses_update_runtime_diagnostics",
+      "start_line": 5,
+      "end_line": 82,
+      "lines": 78
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "compile_from_root",
+      "start_line": 123,
+      "end_line": 199,
+      "lines": 77
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_model_catalog_reload",
+      "start_line": 426,
+      "end_line": 501,
+      "lines": 76
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "load_runtime_from_root",
+      "start_line": 319,
+      "end_line": 391,
+      "lines": 73
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_build_rule_mask",
+      "start_line": 135,
+      "end_line": 205,
+      "lines": 71
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_render_policy_graph",
+      "start_line": 413,
+      "end_line": 480,
+      "lines": 68
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_select_ai_input_dimensions",
+      "start_line": 200,
+      "end_line": 263,
+      "lines": 64
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_policy_compile_and_apply",
+      "start_line": 329,
+      "end_line": 392,
+      "lines": 64
+    },
+    {
+      "file": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "name": "DecodeSegmentationMasks",
+      "start_line": 124,
+      "end_line": 186,
+      "lines": 63
+    },
+    {
+      "file": "plugins/lenses/test/lenses-runtime-soak-test.cpp",
+      "name": "main",
+      "start_line": 26,
+      "end_line": 85,
+      "lines": 60
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "SubmitFrame",
+      "start_line": 226,
+      "end_line": 280,
+      "lines": 55
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "SubmitFrame",
+      "start_line": 136,
+      "end_line": 190,
+      "lines": 55
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "Stop",
+      "start_line": 172,
+      "end_line": 224,
+      "lines": 53
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_build_runtime_debug_text",
+      "start_line": 138,
+      "end_line": 187,
+      "lines": 50
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_extract_model_imgsz",
+      "start_line": 170,
+      "end_line": 219,
+      "lines": 50
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_destroy_render_targets",
+      "start_line": 38,
+      "end_line": 86,
+      "lines": 49
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_maybe_downshift_auto_input_profile",
+      "start_line": 265,
+      "end_line": 313,
+      "lines": 49
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "ResizeBGRAtoRGBFloatScalar",
+      "start_line": 167,
+      "end_line": 214,
+      "lines": 48
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "lenses_initialize_passes",
+      "start_line": 143,
+      "end_line": 190,
+      "lines": 48
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_render_chain_texture",
+      "start_line": 364,
+      "end_line": 411,
+      "lines": 48
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_build_rule_debug_text",
+      "start_line": 214,
+      "end_line": 261,
+      "lines": 48
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_get_technique_and_multiplier",
+      "start_line": 114,
+      "end_line": 161,
+      "lines": 48
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "collect_selector_class_ids",
+      "start_line": 274,
+      "end_line": 317,
+      "lines": 44
+    },
+    {
+      "file": "plugins/lenses/test/lenses-benchmark.cpp",
+      "name": "main",
+      "start_line": 63,
+      "end_line": 106,
+      "lines": 44
+    },
+    {
+      "file": "plugins/lenses/src/pipeline/lenses-pass.c",
+      "name": "lenses_pass_load",
+      "start_line": 13,
+      "end_line": 55,
+      "lines": 43
+    },
+    {
+      "file": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "name": "TestClassUnionMerge",
+      "start_line": 94,
+      "end_line": 136,
+      "lines": 43
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/backend-resolver.cpp",
+      "name": "ResolveAutoSelection",
+      "start_line": 33,
+      "end_line": 74,
+      "lines": 42
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "NoopMaskGenerator::WorkerLoop",
+      "start_line": 149,
+      "end_line": 190,
+      "lines": 42
+    },
+    {
+      "file": "plugins/lenses/src/pipeline/lenses-pass.c",
+      "name": "lenses_pass_render",
+      "start_line": 74,
+      "end_line": 115,
+      "lines": 42
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_fill_runtime_stats",
+      "start_line": 337,
+      "end_line": 377,
+      "lines": 41
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_resolve_model_selection",
+      "start_line": 159,
+      "end_line": 198,
+      "lines": 40
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "InitializeIoBinding",
+      "start_line": 511,
+      "end_line": 549,
+      "lines": 39
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_recommended_auto_input_dim",
+      "start_line": 29,
+      "end_line": 67,
+      "lines": 39
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_policy_apply_legacy_overrides_from_file",
+      "start_line": 411,
+      "end_line": 449,
+      "lines": 39
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "CoreContext",
+      "start_line": 64,
+      "end_line": 101,
+      "lines": 38
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_set_runtime_config",
+      "start_line": 419,
+      "end_line": 456,
+      "lines": 38
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_defaults",
+      "start_line": 348,
+      "end_line": 384,
+      "lines": 37
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_model_catalog_pick_by_size",
+      "start_line": 544,
+      "end_line": 580,
+      "lines": 37
+    },
+    {
+      "file": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "name": "TestSingleInstanceDecode",
+      "start_line": 28,
+      "end_line": 64,
+      "lines": 37
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "BuildSyntheticMaskFrame",
+      "start_line": 14,
+      "end_line": 48,
+      "lines": 35
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_apply_debug_overlay",
+      "start_line": 329,
+      "end_line": 362,
+      "lines": 34
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_collect_available_size_tiers",
+      "start_line": 80,
+      "end_line": 113,
+      "lines": 34
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/mask-generator-factory.cpp",
+      "name": "CreateMaskGenerator",
+      "start_line": 15,
+      "end_line": 46,
+      "lines": 32
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "CopyMaskBitmap",
+      "start_line": 266,
+      "end_line": 296,
+      "lines": 31
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_collect_from_root",
+      "start_line": 357,
+      "end_line": 386,
+      "lines": 30
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_model_entry_compare",
+      "start_line": 388,
+      "end_line": 417,
+      "lines": 30
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-layout.cpp",
+      "name": "InferProtoLayoutFromElementCount",
+      "start_line": 35,
+      "end_line": 63,
+      "lines": 29
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_policy_save_clicked",
+      "start_line": 30,
+      "end_line": 58,
+      "lines": 29
+    },
+    {
+      "file": "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp",
+      "name": "IoU",
+      "start_line": 33,
+      "end_line": 60,
+      "lines": 28
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_ensure_mask_texture",
+      "start_line": 51,
+      "end_line": 78,
+      "lines": 28
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_capture_target",
+      "start_line": 191,
+      "end_line": 218,
+      "lines": 28
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_get_color_space",
+      "start_line": 386,
+      "end_line": 413,
+      "lines": 28
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "GetStats",
+      "start_line": 298,
+      "end_line": 324,
+      "lines": 27
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_draw_final_texture",
+      "start_line": 163,
+      "end_line": 189,
+      "lines": 27
+    },
+    {
+      "file": "plugins/lenses/test/bytetrack-tracker-test.cpp",
+      "name": "TestOcclusionBufferRetention",
+      "start_line": 54,
+      "end_line": 80,
+      "lines": 27
+    },
+    {
+      "file": "plugins/lenses/test/lenses-benchmark.cpp",
+      "name": "BuildSyntheticSegmentationTensors",
+      "start_line": 33,
+      "end_line": 59,
+      "lines": 27
+    },
+    {
+      "file": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "name": "TestAreaThresholdFilter",
+      "start_line": 66,
+      "end_line": 92,
+      "lines": 27
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-layout.cpp",
+      "name": "InferDetectionLayoutFromElementCount",
+      "start_line": 65,
+      "end_line": 90,
+      "lines": 26
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_infer_size_tier_from_text",
+      "start_line": 58,
+      "end_line": 83,
+      "lines": 26
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_collect_loose_onnx",
+      "start_line": 330,
+      "end_line": 355,
+      "lines": 26
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_coco_class_id_from_name",
+      "start_line": 247,
+      "end_line": 272,
+      "lines": 26
+    }
+  ],
+  "all_functions": [
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_filter_properties",
+      "start_line": 263,
+      "end_line": 581,
+      "lines": 319
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "RunInference",
+      "start_line": 570,
+      "end_line": 808,
+      "lines": 239
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "WorkerLoop",
+      "start_line": 811,
+      "end_line": 994,
+      "lines": 184
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-ai-submit.c",
+      "name": "lenses_submit_ai_frame",
+      "start_line": 76,
+      "end_line": 219,
+      "lines": 144
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-provider.cpp",
+      "name": "ConfigureExecutionProviders",
+      "start_line": 23,
+      "end_line": 163,
+      "lines": 141
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "ResizeBGRAtoRGBFloatAccelerate",
+      "start_line": 217,
+      "end_line": 354,
+      "lines": 138
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_update",
+      "start_line": 216,
+      "end_line": 346,
+      "lines": 131
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "InitializeSession",
+      "start_line": 391,
+      "end_line": 509,
+      "lines": 119
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_apply_runtime_config",
+      "start_line": 394,
+      "end_line": 509,
+      "lines": 116
+    },
+    {
+      "file": "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp",
+      "name": "ByteTrackTracker::Update",
+      "start_line": 86,
+      "end_line": 199,
+      "lines": 114
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_build_debug_overlay",
+      "start_line": 218,
+      "end_line": 327,
+      "lines": 110
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-layout.cpp",
+      "name": "DecodeDetections",
+      "start_line": 92,
+      "end_line": 196,
+      "lines": 105
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_render",
+      "start_line": 92,
+      "end_line": 186,
+      "lines": 95
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-session-io.cpp",
+      "name": "InitializeSessionModelIo",
+      "start_line": 17,
+      "end_line": 102,
+      "lines": 86
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_collect_manifest_package",
+      "start_line": 243,
+      "end_line": 328,
+      "lines": 86
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_policy_write_legacy_preset",
+      "start_line": 470,
+      "end_line": 553,
+      "lines": 84
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "Start",
+      "start_line": 88,
+      "end_line": 170,
+      "lines": 83
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-iobinding.cpp",
+      "name": "InitializeIoBindingSetup",
+      "start_line": 34,
+      "end_line": 114,
+      "lines": 81
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/backend-resolver.cpp",
+      "name": "ResolveBackendSelection",
+      "start_line": 78,
+      "end_line": 155,
+      "lines": 78
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-diagnostics.c",
+      "name": "lenses_update_runtime_diagnostics",
+      "start_line": 5,
+      "end_line": 82,
+      "lines": 78
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "compile_from_root",
+      "start_line": 123,
+      "end_line": 199,
+      "lines": 77
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_model_catalog_reload",
+      "start_line": 426,
+      "end_line": 501,
+      "lines": 76
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "load_runtime_from_root",
+      "start_line": 319,
+      "end_line": 391,
+      "lines": 73
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_build_rule_mask",
+      "start_line": 135,
+      "end_line": 205,
+      "lines": 71
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_render_policy_graph",
+      "start_line": 413,
+      "end_line": 480,
+      "lines": 68
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_select_ai_input_dimensions",
+      "start_line": 200,
+      "end_line": 263,
+      "lines": 64
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_policy_compile_and_apply",
+      "start_line": 329,
+      "end_line": 392,
+      "lines": 64
+    },
+    {
+      "file": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "name": "DecodeSegmentationMasks",
+      "start_line": 124,
+      "end_line": 186,
+      "lines": 63
+    },
+    {
+      "file": "plugins/lenses/test/lenses-runtime-soak-test.cpp",
+      "name": "main",
+      "start_line": 26,
+      "end_line": 85,
+      "lines": 60
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "SubmitFrame",
+      "start_line": 226,
+      "end_line": 280,
+      "lines": 55
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "SubmitFrame",
+      "start_line": 136,
+      "end_line": 190,
+      "lines": 55
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "Stop",
+      "start_line": 172,
+      "end_line": 224,
+      "lines": 53
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_build_runtime_debug_text",
+      "start_line": 138,
+      "end_line": 187,
+      "lines": 50
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_extract_model_imgsz",
+      "start_line": 170,
+      "end_line": 219,
+      "lines": 50
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_destroy_render_targets",
+      "start_line": 38,
+      "end_line": 86,
+      "lines": 49
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_maybe_downshift_auto_input_profile",
+      "start_line": 265,
+      "end_line": 313,
+      "lines": 49
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "ResizeBGRAtoRGBFloatScalar",
+      "start_line": 167,
+      "end_line": 214,
+      "lines": 48
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "lenses_initialize_passes",
+      "start_line": 143,
+      "end_line": 190,
+      "lines": 48
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_render_chain_texture",
+      "start_line": 364,
+      "end_line": 411,
+      "lines": 48
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_build_rule_debug_text",
+      "start_line": 214,
+      "end_line": 261,
+      "lines": 48
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_get_technique_and_multiplier",
+      "start_line": 114,
+      "end_line": 161,
+      "lines": 48
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "collect_selector_class_ids",
+      "start_line": 274,
+      "end_line": 317,
+      "lines": 44
+    },
+    {
+      "file": "plugins/lenses/test/lenses-benchmark.cpp",
+      "name": "main",
+      "start_line": 63,
+      "end_line": 106,
+      "lines": 44
+    },
+    {
+      "file": "plugins/lenses/src/pipeline/lenses-pass.c",
+      "name": "lenses_pass_load",
+      "start_line": 13,
+      "end_line": 55,
+      "lines": 43
+    },
+    {
+      "file": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "name": "TestClassUnionMerge",
+      "start_line": 94,
+      "end_line": 136,
+      "lines": 43
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/backend-resolver.cpp",
+      "name": "ResolveAutoSelection",
+      "start_line": 33,
+      "end_line": 74,
+      "lines": 42
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "NoopMaskGenerator::WorkerLoop",
+      "start_line": 149,
+      "end_line": 190,
+      "lines": 42
+    },
+    {
+      "file": "plugins/lenses/src/pipeline/lenses-pass.c",
+      "name": "lenses_pass_render",
+      "start_line": 74,
+      "end_line": 115,
+      "lines": 42
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_fill_runtime_stats",
+      "start_line": 337,
+      "end_line": 377,
+      "lines": 41
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_resolve_model_selection",
+      "start_line": 159,
+      "end_line": 198,
+      "lines": 40
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "InitializeIoBinding",
+      "start_line": 511,
+      "end_line": 549,
+      "lines": 39
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_recommended_auto_input_dim",
+      "start_line": 29,
+      "end_line": 67,
+      "lines": 39
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_policy_apply_legacy_overrides_from_file",
+      "start_line": 411,
+      "end_line": 449,
+      "lines": 39
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "CoreContext",
+      "start_line": 64,
+      "end_line": 101,
+      "lines": 38
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_set_runtime_config",
+      "start_line": 419,
+      "end_line": 456,
+      "lines": 38
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_defaults",
+      "start_line": 348,
+      "end_line": 384,
+      "lines": 37
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_model_catalog_pick_by_size",
+      "start_line": 544,
+      "end_line": 580,
+      "lines": 37
+    },
+    {
+      "file": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "name": "TestSingleInstanceDecode",
+      "start_line": 28,
+      "end_line": 64,
+      "lines": 37
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "BuildSyntheticMaskFrame",
+      "start_line": 14,
+      "end_line": 48,
+      "lines": 35
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_apply_debug_overlay",
+      "start_line": 329,
+      "end_line": 362,
+      "lines": 34
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_collect_available_size_tiers",
+      "start_line": 80,
+      "end_line": 113,
+      "lines": 34
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/mask-generator-factory.cpp",
+      "name": "CreateMaskGenerator",
+      "start_line": 15,
+      "end_line": 46,
+      "lines": 32
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "CopyMaskBitmap",
+      "start_line": 266,
+      "end_line": 296,
+      "lines": 31
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_collect_from_root",
+      "start_line": 357,
+      "end_line": 386,
+      "lines": 30
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_model_entry_compare",
+      "start_line": 388,
+      "end_line": 417,
+      "lines": 30
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-layout.cpp",
+      "name": "InferProtoLayoutFromElementCount",
+      "start_line": 35,
+      "end_line": 63,
+      "lines": 29
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_policy_save_clicked",
+      "start_line": 30,
+      "end_line": 58,
+      "lines": 29
+    },
+    {
+      "file": "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp",
+      "name": "IoU",
+      "start_line": 33,
+      "end_line": 60,
+      "lines": 28
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_ensure_mask_texture",
+      "start_line": 51,
+      "end_line": 78,
+      "lines": 28
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_capture_target",
+      "start_line": 191,
+      "end_line": 218,
+      "lines": 28
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_get_color_space",
+      "start_line": 386,
+      "end_line": 413,
+      "lines": 28
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "GetStats",
+      "start_line": 298,
+      "end_line": 324,
+      "lines": 27
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_draw_final_texture",
+      "start_line": 163,
+      "end_line": 189,
+      "lines": 27
+    },
+    {
+      "file": "plugins/lenses/test/bytetrack-tracker-test.cpp",
+      "name": "TestOcclusionBufferRetention",
+      "start_line": 54,
+      "end_line": 80,
+      "lines": 27
+    },
+    {
+      "file": "plugins/lenses/test/lenses-benchmark.cpp",
+      "name": "BuildSyntheticSegmentationTensors",
+      "start_line": 33,
+      "end_line": 59,
+      "lines": 27
+    },
+    {
+      "file": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "name": "TestAreaThresholdFilter",
+      "start_line": 66,
+      "end_line": 92,
+      "lines": 27
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-layout.cpp",
+      "name": "InferDetectionLayoutFromElementCount",
+      "start_line": 65,
+      "end_line": 90,
+      "lines": 26
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_infer_size_tier_from_text",
+      "start_line": 58,
+      "end_line": 83,
+      "lines": 26
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_collect_loose_onnx",
+      "start_line": 330,
+      "end_line": 355,
+      "lines": 26
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_coco_class_id_from_name",
+      "start_line": 247,
+      "end_line": 272,
+      "lines": 26
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-ai-submit.c",
+      "name": "lenses_estimate_ai_frame_luma",
+      "start_line": 7,
+      "end_line": 31,
+      "lines": 25
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_ensure_render_targets",
+      "start_line": 88,
+      "end_line": 112,
+      "lines": 25
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_normalize_size_tier",
+      "start_line": 47,
+      "end_line": 71,
+      "lines": 25
+    },
+    {
+      "file": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "name": "DecodeCandidate",
+      "start_line": 88,
+      "end_line": 111,
+      "lines": 24
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-layout.cpp",
+      "name": "BuildDetectionLayout",
+      "start_line": 10,
+      "end_line": 33,
+      "lines": 24
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "BuildLumaSample",
+      "start_line": 104,
+      "end_line": 127,
+      "lines": 24
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "OnnxRuntimeLogCallback",
+      "start_line": 366,
+      "end_line": 389,
+      "lines": 24
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "CopyLatestMaskInstances",
+      "start_line": 223,
+      "end_line": 246,
+      "lines": 24
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_build_detection_debug_text",
+      "start_line": 189,
+      "end_line": 212,
+      "lines": 24
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "BoxIoU",
+      "start_line": 80,
+      "end_line": 102,
+      "lines": 23
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "IsFrameSimilar",
+      "start_line": 129,
+      "end_line": 151,
+      "lines": 23
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "TryGetTensorShape",
+      "start_line": 56,
+      "end_line": 78,
+      "lines": 23
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_submit_frame_bgra",
+      "start_line": 473,
+      "end_line": 495,
+      "lines": 23
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_refresh_mask_snapshot",
+      "start_line": 80,
+      "end_line": 102,
+      "lines": 23
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_format_available_sizes",
+      "start_line": 115,
+      "end_line": 137,
+      "lines": 23
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "ensure_parent_directory",
+      "start_line": 99,
+      "end_line": 121,
+      "lines": 23
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "TryParseUintAfterLabel",
+      "start_line": 28,
+      "end_line": 49,
+      "lines": 22
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "TryParseCoreMLCapabilityLog",
+      "start_line": 357,
+      "end_line": 378,
+      "lines": 22
+    },
+    {
+      "file": "plugins/lenses/src/core/rule-compiler.cpp",
+      "name": "DeterministicRuleCompiler::Compile",
+      "start_line": 7,
+      "end_line": 28,
+      "lines": 22
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-ai-submit.c",
+      "name": "lenses_ai_submit_interval_ns",
+      "start_line": 53,
+      "end_line": 74,
+      "lines": 22
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_normalize_ai_target_fps",
+      "start_line": 15,
+      "end_line": 36,
+      "lines": 22
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "SetRuntimeConfig",
+      "start_line": 114,
+      "end_line": 134,
+      "lines": 21
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "invert_pass_load_params",
+      "start_line": 10,
+      "end_line": 30,
+      "lines": 21
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_register_entry",
+      "start_line": 125,
+      "end_line": 145,
+      "lines": 21
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-artifacts.cpp",
+      "name": "HashConfigForOptimizedArtifact",
+      "start_line": 34,
+      "end_line": 53,
+      "lines": 20
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "NoopMaskGenerator::Stop",
+      "start_line": 75,
+      "end_line": 94,
+      "lines": 20
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_rule_hits_class_masks",
+      "start_line": 96,
+      "end_line": 115,
+      "lines": 20
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_append_coreml_runtime_text",
+      "start_line": 117,
+      "end_line": 136,
+      "lines": 20
+    },
+    {
+      "file": "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp",
+      "name": "CloudMaskGenerator::GetHealth",
+      "start_line": 76,
+      "end_line": 94,
+      "lines": 19
+    },
+    {
+      "file": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "name": "CropMaskToRect",
+      "start_line": 52,
+      "end_line": 70,
+      "lines": 19
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_fill_runtime_health",
+      "start_line": 379,
+      "end_line": 397,
+      "lines": 19
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-ai-submit.c",
+      "name": "lenses_ai_last_stage_ms",
+      "start_line": 33,
+      "end_line": 51,
+      "lines": 19
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_ensure_fallback_textures",
+      "start_line": 18,
+      "end_line": 36,
+      "lines": 19
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_assign_size_tier",
+      "start_line": 85,
+      "end_line": 103,
+      "lines": 19
+    },
+    {
+      "file": "plugins/lenses/test/bytetrack-tracker-test.cpp",
+      "name": "TestClassAwareAssociation",
+      "start_line": 82,
+      "end_line": 100,
+      "lines": 19
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-stats.hpp",
+      "name": "FillPercentiles",
+      "start_line": 65,
+      "end_line": 82,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "RefreshCoreMLHealthSnapshot",
+      "start_line": 551,
+      "end_line": 568,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "NoopMaskGenerator::SubmitFrame",
+      "start_line": 96,
+      "end_line": 113,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "masked_blend_pass_load_params",
+      "start_line": 96,
+      "end_line": 113,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "masked_blend_pass_apply_params",
+      "start_line": 124,
+      "end_line": 141,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_load_mask_bitmap",
+      "start_line": 116,
+      "end_line": 133,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_parse_input_profile_dim",
+      "start_line": 10,
+      "end_line": 27,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_append_unique_class_id",
+      "start_line": 201,
+      "end_line": 218,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_policy_load_runtime_file",
+      "start_line": 451,
+      "end_line": 468,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/test/bytetrack-tracker-test.cpp",
+      "name": "MakeSingleInstanceFrame",
+      "start_line": 16,
+      "end_line": 33,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/test/bytetrack-tracker-test.cpp",
+      "name": "TestStableIdAcrossMotion",
+      "start_line": 35,
+      "end_line": 52,
+      "lines": 18
+    },
+    {
+      "file": "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp",
+      "name": "CloudMaskGenerator::TryPopMaskFrame",
+      "start_line": 46,
+      "end_line": 62,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-artifacts.cpp",
+      "name": "BuildOrtOptimizedModelPath",
+      "start_line": 55,
+      "end_line": 71,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "PercentileFromSamples",
+      "start_line": 62,
+      "end_line": 78,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "GetHealth",
+      "start_line": 326,
+      "end_line": 342,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "GetLatestMaskFrameInfo",
+      "start_line": 205,
+      "end_line": 221,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "CopyLatestClassMasks",
+      "start_line": 248,
+      "end_line": 264,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_get_runtime_snapshot",
+      "start_line": 569,
+      "end_line": 585,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "NoopMaskGenerator::Start",
+      "start_line": 57,
+      "end_line": 73,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_size_label",
+      "start_line": 73,
+      "end_line": 89,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_create",
+      "start_line": 198,
+      "end_line": 214,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_has_onnx_extension",
+      "start_line": 17,
+      "end_line": 33,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_normalize_size_tier",
+      "start_line": 40,
+      "end_line": 56,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_policy_compile_file",
+      "start_line": 393,
+      "end_line": 409,
+      "lines": 17
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-stats.hpp",
+      "name": "ComputeFpsFromEvents",
+      "start_line": 48,
+      "end_line": 63,
+      "lines": 16
+    },
+    {
+      "file": "plugins/lenses/src/pipeline/lenses-pass.c",
+      "name": "lenses_pass_unload",
+      "start_line": 57,
+      "end_line": 72,
+      "lines": 16
+    },
+    {
+      "file": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "name": "ComputeAreaRatio",
+      "start_line": 72,
+      "end_line": 86,
+      "lines": 15
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "TryPopMaskFrame",
+      "start_line": 282,
+      "end_line": 296,
+      "lines": 15
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_policy_set_result",
+      "start_line": 27,
+      "end_line": 41,
+      "lines": 15
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_extract_array_item_int",
+      "start_line": 220,
+      "end_line": 234,
+      "lines": 15
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_submit_frame",
+      "start_line": 458,
+      "end_line": 471,
+      "lines": 14
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "invert_pass_apply_params",
+      "start_line": 41,
+      "end_line": 54,
+      "lines": 14
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_ensure_byte_buffer",
+      "start_line": 36,
+      "end_line": 49,
+      "lines": 14
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "SimilaritySkipBudget",
+      "start_line": 153,
+      "end_line": 165,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "GetHealth",
+      "start_line": 306,
+      "end_line": 318,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-compositor.cpp",
+      "name": "NoopCompositor::Compose",
+      "start_line": 5,
+      "end_line": 17,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_chain_from_name",
+      "start_line": 8,
+      "end_line": 20,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_blend_mode_from_name",
+      "start_line": 22,
+      "end_line": 34,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_class_mask_present",
+      "start_line": 74,
+      "end_line": 86,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_ai_infer_ceiling_fps",
+      "start_line": 315,
+      "end_line": 327,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/test/bytetrack-tracker-test.cpp",
+      "name": "main",
+      "start_line": 104,
+      "end_line": 116,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/test/lenses-benchmark.cpp",
+      "name": "ComputeMetrics",
+      "start_line": 19,
+      "end_line": 31,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/test/lenses-runtime-soak-test.cpp",
+      "name": "WaitForProgress",
+      "start_line": 10,
+      "end_line": 22,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "name": "main",
+      "start_line": 140,
+      "end_line": 152,
+      "lines": 13
+    },
+    {
+      "file": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "name": "ClampRect",
+      "start_line": 24,
+      "end_line": 35,
+      "lines": 12
+    },
+    {
+      "file": "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp",
+      "name": "NormalizeRect",
+      "start_line": 20,
+      "end_line": 31,
+      "lines": 12
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "TryGetLatestMaskFrameId",
+      "start_line": 192,
+      "end_line": 203,
+      "lines": 12
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "NoopMaskGenerator::TryPopMaskFrame",
+      "start_line": 115,
+      "end_line": 126,
+      "lines": 12
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "solid_color_pass_load_params",
+      "start_line": 62,
+      "end_line": 73,
+      "lines": 12
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-render-path.c",
+      "name": "lenses_ensure_texrender",
+      "start_line": 5,
+      "end_line": 16,
+      "lines": 12
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_parse_positive_u32_from_data",
+      "start_line": 157,
+      "end_line": 168,
+      "lines": 12
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_build_model_path",
+      "start_line": 230,
+      "end_line": 241,
+      "lines": 12
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_model_catalog_find_by_id",
+      "start_line": 503,
+      "end_line": 514,
+      "lines": 12
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_model_catalog_pick_default",
+      "start_line": 530,
+      "end_line": 541,
+      "lines": 12
+    },
+    {
+      "file": "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp",
+      "name": "CloudMaskGenerator::Start",
+      "start_line": 17,
+      "end_line": 27,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp",
+      "name": "CloudMaskGenerator::GetStats",
+      "start_line": 64,
+      "end_line": 74,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-artifacts.cpp",
+      "name": "BuildOrtProfilePrefix",
+      "start_line": 22,
+      "end_line": 32,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "ParsePreprocessMode",
+      "start_line": 24,
+      "end_line": 34,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "ParseSchedulerMode",
+      "start_line": 36,
+      "end_line": 46,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "ParseDropPolicy",
+      "start_line": 48,
+      "end_line": 58,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_copy_mask_bitmap",
+      "start_line": 535,
+      "end_line": 545,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "NoopMaskGenerator::GetHealth",
+      "start_line": 137,
+      "end_line": 147,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "solid_color_pass_apply_params",
+      "start_line": 84,
+      "end_line": 94,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_find_class_mask_handle",
+      "start_line": 104,
+      "end_line": 114,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_find_index_by_id",
+      "start_line": 113,
+      "end_line": 123,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_model_catalog_find_by_path",
+      "start_line": 517,
+      "end_line": 527,
+      "lines": 11
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-artifacts.cpp",
+      "name": "BuildCoreMLCacheDirectory",
+      "start_line": 11,
+      "end_line": 20,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-iobinding.cpp",
+      "name": "TryGetTensorShape",
+      "start_line": 10,
+      "end_line": 19,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-iobinding.cpp",
+      "name": "IsStaticShape",
+      "start_line": 21,
+      "end_line": 30,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "Stop",
+      "start_line": 103,
+      "end_line": 112,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_get_runtime_stats",
+      "start_line": 547,
+      "end_line": 556,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_get_runtime_health",
+      "start_line": 558,
+      "end_line": 567,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-policy-graph.c",
+      "name": "lenses_debug_color_for_class",
+      "start_line": 207,
+      "end_line": 216,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_refresh_filter_properties",
+      "start_line": 10,
+      "end_line": 19,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_next_lower_input_dim",
+      "start_line": 69,
+      "end_line": 78,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_policy_get_builtin_path",
+      "start_line": 139,
+      "end_line": 148,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_extract_array_item_string",
+      "start_line": 236,
+      "end_line": 245,
+      "lines": 10
+    },
+    {
+      "file": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "name": "ValidateTensorShape",
+      "start_line": 37,
+      "end_line": 45,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-stats.hpp",
+      "name": "SnapshotSorted",
+      "start_line": 29,
+      "end_line": 37,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/model-registry.cpp",
+      "name": "ModelRegistry::FindByPath",
+      "start_line": 23,
+      "end_line": 31,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_create",
+      "start_line": 399,
+      "end_line": 407,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_destroy",
+      "start_line": 409,
+      "end_line": 417,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_copy_latest_mask_instances",
+      "start_line": 515,
+      "end_line": 523,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_copy_latest_class_masks",
+      "start_line": 525,
+      "end_line": 533,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_destroy",
+      "start_line": 188,
+      "end_line": 196,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_extract_manifest_string",
+      "start_line": 147,
+      "end_line": 155,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_hash_update",
+      "start_line": 43,
+      "end_line": 51,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "compiled_rule_compare",
+      "start_line": 60,
+      "end_line": 68,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "runtime_rule_compare",
+      "start_line": 70,
+      "end_line": 78,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "compiled_rule_clear",
+      "start_line": 80,
+      "end_line": 88,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "name": "ActivePixels",
+      "start_line": 9,
+      "end_line": 17,
+      "lines": 9
+    },
+    {
+      "file": "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp",
+      "name": "CloudMaskGenerator::SubmitFrame",
+      "start_line": 37,
+      "end_line": 44,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "name": "Clamp01",
+      "start_line": 15,
+      "end_line": 22,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "name": "MergeMaskInto",
+      "start_line": 113,
+      "end_line": 120,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-preprocess.cpp",
+      "name": "Clamp01",
+      "start_line": 53,
+      "end_line": 60,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/model-registry.cpp",
+      "name": "ModelRegistry::Register",
+      "start_line": 5,
+      "end_line": 12,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/model-registry.cpp",
+      "name": "ModelRegistry::FindById",
+      "start_line": 14,
+      "end_line": 21,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp",
+      "name": "Clamp01",
+      "start_line": 11,
+      "end_line": 18,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_try_get_latest_mask_frame_id",
+      "start_line": 497,
+      "end_line": 504,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "lenses_core_get_latest_mask_frame_info",
+      "start_line": 506,
+      "end_line": 513,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "NoopMaskGenerator::GetStats",
+      "start_line": 128,
+      "end_line": 135,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "invert_pass_free_params",
+      "start_line": 32,
+      "end_line": 39,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "solid_color_pass_free_params",
+      "start_line": 75,
+      "end_line": 82,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "masked_blend_pass_free_params",
+      "start_line": 115,
+      "end_line": 122,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_policy_reload_clicked",
+      "start_line": 21,
+      "end_line": 28,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_models_reload_clicked",
+      "start_line": 60,
+      "end_line": 67,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-runtime-config.c",
+      "name": "lenses_refresh_model_catalog",
+      "start_line": 150,
+      "end_line": 157,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_extract_model_bool",
+      "start_line": 221,
+      "end_line": 228,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "clamp01",
+      "start_line": 90,
+      "end_line": 97,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/test/segmentation-decoder-test.cpp",
+      "name": "Expect",
+      "start_line": 19,
+      "end_line": 26,
+      "lines": 8
+    },
+    {
+      "file": "plugins/lenses/lenses-module.c",
+      "name": "OBS_DECLARE_MODULE",
+      "start_line": 5,
+      "end_line": 11,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp",
+      "name": "CloudMaskGenerator::Stop",
+      "start_line": 29,
+      "end_line": 35,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-session-io.cpp",
+      "name": "BuildNameViews",
+      "start_line": 9,
+      "end_line": 15,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-stats.hpp",
+      "name": "Push",
+      "start_line": 21,
+      "end_line": 27,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator-stats.hpp",
+      "name": "RecordEvent",
+      "start_line": 40,
+      "end_line": 46,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp",
+      "name": "ByteTrackTracker::ByteTrackTracker",
+      "start_line": 71,
+      "end_line": 77,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/src/core/core-bridge.cpp",
+      "name": "GetStats",
+      "start_line": 298,
+      "end_line": 304,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "lenses_destroy_passes",
+      "start_line": 192,
+      "end_line": 198,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_rule_targets_class_masks",
+      "start_line": 88,
+      "end_line": 94,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_write_status",
+      "start_line": 105,
+      "end_line": 111,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/test/bytetrack-tracker-test.cpp",
+      "name": "Expect",
+      "start_line": 8,
+      "end_line": 14,
+      "lines": 7
+    },
+    {
+      "file": "plugins/lenses/lenses-module.c",
+      "name": "obs_module_load",
+      "start_line": 13,
+      "end_line": 18,
+      "lines": 6
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "OnnxMaskGenerator::~OnnxMaskGenerator",
+      "start_line": 1073,
+      "end_line": 1078,
+      "lines": 6
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/backend-resolver.cpp",
+      "name": "ToLower",
+      "start_line": 12,
+      "end_line": 17,
+      "lines": 6
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/backend-resolver.cpp",
+      "name": "StartsWith",
+      "start_line": 19,
+      "end_line": 24,
+      "lines": 6
+    },
+    {
+      "file": "plugins/lenses/src/ai/runtime/backend-resolver.cpp",
+      "name": "SetOrtSelection",
+      "start_line": 26,
+      "end_line": 31,
+      "lines": 6
+    },
+    {
+      "file": "plugins/lenses/src/ai/tracking/bytetrack-tracker.cpp",
+      "name": "ByteTrackTracker::Reset",
+      "start_line": 79,
+      "end_line": 84,
+      "lines": 6
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_model_catalog_clear",
+      "start_line": 419,
+      "end_line": 424,
+      "lines": 6
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-policy.c",
+      "name": "lenses_hash_update_str",
+      "start_line": 53,
+      "end_line": 58,
+      "lines": 6
+    },
+    {
+      "file": "plugins/lenses/src/pipeline/lenses-pass.c",
+      "name": "lenses_pass_reset",
+      "start_line": 6,
+      "end_line": 11,
+      "lines": 6
+    },
+    {
+      "file": "plugins/lenses/src/core/registry.cpp",
+      "name": "MaskRegistry::Store",
+      "start_line": 8,
+      "end_line": 12,
+      "lines": 5
+    },
+    {
+      "file": "plugins/lenses/src/core/registry.cpp",
+      "name": "MaskRegistry::Latest",
+      "start_line": 14,
+      "end_line": 18,
+      "lines": 5
+    },
+    {
+      "file": "plugins/lenses/src/core/registry.cpp",
+      "name": "MaskRegistry::Clear",
+      "start_line": 20,
+      "end_line": 24,
+      "lines": 5
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "grayscale_pass_load_params",
+      "start_line": 56,
+      "end_line": 60,
+      "lines": 5
+    },
+    {
+      "file": "plugins/lenses/src/filter/lenses-filter.c",
+      "name": "lenses_filter_get_name",
+      "start_line": 41,
+      "end_line": 45,
+      "lines": 5
+    },
+    {
+      "file": "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp",
+      "name": "CloudMaskGenerator::CloudMaskGenerator",
+      "start_line": 7,
+      "end_line": 10,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/ai/cloud/cloud-mask-generator.cpp",
+      "name": "CloudMaskGenerator::~CloudMaskGenerator",
+      "start_line": 12,
+      "end_line": 15,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/ai/decode/segmentation-decoder.cpp",
+      "name": "BuildMaskHandle",
+      "start_line": 47,
+      "end_line": 50,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "OnnxMaskGenerator::Stop",
+      "start_line": 1080,
+      "end_line": 1083,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "OnnxMaskGenerator::SubmitFrame",
+      "start_line": 1085,
+      "end_line": 1088,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "OnnxMaskGenerator::TryPopMaskFrame",
+      "start_line": 1090,
+      "end_line": 1093,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "OnnxMaskGenerator::GetStats",
+      "start_line": 1095,
+      "end_line": 1098,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "OnnxMaskGenerator::GetHealth",
+      "start_line": 1100,
+      "end_line": 1103,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/core/noop-mask-generator.cpp",
+      "name": "NoopMaskGenerator::~NoopMaskGenerator",
+      "start_line": 52,
+      "end_line": 55,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-pass-setup.c",
+      "name": "invert_pass_enabled",
+      "start_line": 5,
+      "end_line": 8,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/filter/host/lenses-filter-properties.c",
+      "name": "lenses_debug_refresh_clicked",
+      "start_line": 69,
+      "end_line": 72,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/src/io/lenses-model-catalog.c",
+      "name": "lenses_safe_string",
+      "start_line": 35,
+      "end_line": 38,
+      "lines": 4
+    },
+    {
+      "file": "plugins/lenses/include/lenses/core/types.hpp",
+      "name": "Valid",
+      "start_line": 33,
+      "end_line": 33,
+      "lines": 1
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "Impl",
+      "start_line": 86,
+      "end_line": 86,
+      "lines": 1
+    },
+    {
+      "file": "plugins/lenses/src/ai/ort/onnx-mask-generator.cpp",
+      "name": "OnnxMaskGenerator::OnnxMaskGenerator",
+      "start_line": 1071,
+      "end_line": 1071,
+      "lines": 1
+    }
+  ]
+}

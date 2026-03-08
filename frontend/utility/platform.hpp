@@ -19,10 +19,22 @@
 
 #include <util/c99defs.h>
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
 class QWidget;
+
+struct WindowHitInfo {
+	uint64_t windowId = 0;
+	bool ownerIsCurrentProcess = false;
+	bool ownerIsFrontmostApplication = false;
+	int ownerProcessId = 0;
+	double globalMouseX = 0.0;
+	double globalMouseY = 0.0;
+	char ownerName[128] = {};
+	char windowTitle[256] = {};
+};
 
 /* Gets the path of obs-studio specific data files (such as locale) */
 bool GetDataFilePath(const char *data, std::string &path);
@@ -33,6 +45,17 @@ std::vector<std::string> GetPreferredLocales();
 
 bool IsAlwaysOnTop(QWidget *window);
 void SetAlwaysOnTop(QWidget *window, bool enable);
+void SetWindowInputPassthrough(QWidget *window, bool enable);
+void SetWindowCaptureExcluded(QWidget *window, bool exclude);
+bool SetWindowNonActivatingPanel(QWidget *window, bool enable);
+uint64_t GetWindowCaptureExclusionId(QWidget *window);
+bool IsPrimaryMouseButtonDown();
+bool QueryWindowHitInfoAtMouseLocation(uint64_t belowWindowId, WindowHitInfo &hitInfo);
+bool ActivateWindowOwnerApplication(const WindowHitInfo &hitInfo);
+void DeactivateCurrentApplication();
+bool ReplayPrimaryClickAt(double globalX, double globalY, int targetProcessId = 0);
+bool PerformAccessibilityPressAt(double globalX, double globalY, int targetProcessId);
+int GetFrontmostProcessId();
 
 bool SetDisplayAffinitySupported(void);
 

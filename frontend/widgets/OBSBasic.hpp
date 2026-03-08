@@ -24,6 +24,7 @@
 #include <components/AccessibleAlignmentSelector.hpp>
 #include <oauth/Auth.hpp>
 #include <utility/BasicOutputHandler.hpp>
+#include <utility/lenses-main-mirror-controller.hpp>
 #include <utility/OBSCanvas.hpp>
 #include <utility/PreviewProgramSizeObserver.hpp>
 #include <utility/VCamConfig.hpp>
@@ -42,6 +43,7 @@
 #include <QAccessible>
 #include <QSystemTrayIcon>
 
+#include <cstdint>
 #include <deque>
 
 extern volatile bool recording_paused;
@@ -57,10 +59,13 @@ class OBSLogViewer;
 class OBSMissingFiles;
 class OBSProjector;
 class VolumeControl;
+class QScreen;
 #ifdef YOUTUBE_ENABLED
 class YouTubeAppDock;
 #endif
 class QMessageBox;
+class QActionGroup;
+class QMenu;
 class QWidgetAction;
 struct QuickTransition;
 
@@ -69,6 +74,14 @@ class SceneCollection;
 struct Rect;
 enum class LogFileType;
 } // namespace OBS
+
+namespace lenses::focus {
+class DragHandles;
+}
+
+namespace lenses::mirror {
+class ExternalMirrorWindow;
+}
 
 #define SIMPLE_ENCODER_X264 "x264"
 #define SIMPLE_ENCODER_X264_LOWCPU "x264_lowcpu"
@@ -779,6 +792,35 @@ private slots:
 	 */
 private:
 	bool previewEnabled = true;
+	bool lensesMainMirrorEnabled = false;
+	bool lensesMainMirrorFocusMode = false;
+	bool lensesMainMirrorClickAssist = true;
+	bool lensesMainMirrorForcedPreview = false;
+	bool lensesMainMirrorSavedPreviewLocked = false;
+	bool lensesMainMirrorSavedWindowFlagsValid = false;
+	bool lensesMainMirrorSavedWindowMaximized = false;
+	bool lensesMainMirrorSavedWindowFullscreen = false;
+	bool lensesMainMirrorSavedMenuBarVisible = true;
+	bool lensesMainMirrorSavedStatusBarVisible = true;
+	bool lensesMainMirrorSavedLayoutState = false;
+	int lensesMainMirrorSavedCentralSpacing = 0;
+	int lensesMainMirrorSavedCanvasSpacing = 0;
+	Qt::WindowFlags lensesMainMirrorSavedWindowFlags = Qt::WindowFlags();
+	QRect lensesMainMirrorSavedWindowGeometry;
+	QMargins lensesMainMirrorSavedCentralMargins;
+	QMargins lensesMainMirrorSavedCanvasMargins;
+	std::vector<std::pair<QPointer<QDockWidget>, bool>> lensesMainMirrorDockVisibility;
+	QPointer<QAction> actionLensesMainMirrorMode;
+	QPointer<QAction> actionLensesMainMirrorFocusMode;
+	QPointer<QAction> actionLensesMainMirrorFilters;
+	QPointer<QAction> actionLensesMainMirrorClickAssist;
+	QPointer<QMenu> lensesMainMirrorDisplayMenu;
+	QPointer<QActionGroup> lensesMainMirrorDisplayActions;
+	QPointer<lenses::mirror::ExternalMirrorWindow> lensesMainMirrorWindow;
+	QPointer<QTimer> lensesMainMirrorRetryTimer;
+	std::unique_ptr<lenses::focus::DragHandles> lensesMainMirrorDragHandles;
+	lenses::mirror::MainWindowMirrorController lensesMainMirrorController;
+	int lensesMainMirrorDisplayIndex = 0;
 	QPointer<QTimer> nudge_timer;
 	bool recent_nudge = false;
 
@@ -830,6 +872,24 @@ private:
 
 	void UpdatePreviewOverflowSettings();
 	void UpdatePreviewControls();
+	void EnsureLensesMainMirrorSource();
+	void UpdateLensesMainMirrorSourceSettings(bool force = false);
+	void ReleaseLensesMainMirrorSource();
+	void EnsureLensesMainMirrorWindow();
+	void UpdateLensesMainMirrorWindowTarget();
+	void ReleaseLensesMainMirrorWindow();
+	void RecoverLensesMainMirrorPipeline(bool forceRecreateSources);
+	void RebuildLensesMainMirrorDisplayMenu();
+	int GetLensesMainMirrorTargetScreenIndex() const;
+	QScreen *GetLensesMainMirrorTargetScreen() const;
+	uint64_t GetLensesMainMirrorCaptureExclusionWindowId() const;
+	void EnsureLensesMainMirrorDragHandles();
+	void UpdateLensesMainMirrorDragHandlesLayout();
+	void SetLensesMainMirrorFrameless(bool enabled);
+	void SetLensesMainMirrorEnabled(bool enabled);
+	void SetLensesMainMirrorFocusMode(bool enabled);
+	void SetLensesMainMirrorClickAssistEnabled(bool enabled);
+	void UpdateLensesMainMirrorActionsState();
 
 	/* OBS Callbacks */
 	static void RenderMain(void *data, uint32_t cx, uint32_t cy);
@@ -838,6 +898,11 @@ private:
 
 private slots:
 	void PreviewScalingModeChanged(int value);
+	void ToggleLensesMainMirrorMode();
+	void ToggleLensesMainMirrorFocusMode();
+	void ToggleLensesMainMirrorClickAssist();
+	void OpenLensesMainMirrorFilters();
+	void SelectLensesMainMirrorDisplay();
 
 	void ColorChange();
 

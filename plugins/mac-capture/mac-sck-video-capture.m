@@ -1,5 +1,7 @@
 #include "mac-sck-common.h"
 #include "window-utils.h"
+#include <util/platform.h>
+#include <CoreGraphics/CGWindow.h>
 
 API_AVAILABLE(macos(12.5)) static void destroy_screen_stream(struct screen_capture *sc)
 {
@@ -71,6 +73,154 @@ API_AVAILABLE(macos(12.5)) static void sck_video_capture_destroy(void *data)
     bfree(sc);
 }
 
+API_AVAILABLE(macos(12.5))
+static SCWindow *find_shareable_window_by_id(struct screen_capture *sc, CGWindowID window_id)
+{
+    if (!sc || !sc->shareable_content || window_id == kCGNullWindowID)
+        return nil;
+
+    for (SCWindow *window in sc->shareable_content.windows) {
+        if (window.windowID == window_id)
+            return window;
+    }
+
+    return nil;
+}
+
+API_AVAILABLE(macos(12.5))
+static bool get_window_sharing_state(CGWindowID window_id, int *sharing_state)
+{
+    if (window_id == kCGNullWindowID)
+        return false;
+
+    CFArrayRef windowInfoArray =
+        CGWindowListCopyWindowInfo(kCGWindowListOptionIncludingWindow, window_id);
+    if (!windowInfoArray)
+        return false;
+
+    bool found = false;
+    if (CFArrayGetCount(windowInfoArray) > 0) {
+        CFDictionaryRef info = (CFDictionaryRef)CFArrayGetValueAtIndex(windowInfoArray, 0);
+        if (info && CFGetTypeID(info) == CFDictionaryGetTypeID()) {
+            CFTypeRef sharingStateValue = CFDictionaryGetValue(info, kCGWindowSharingState);
+            if (sharingStateValue && CFGetTypeID(sharingStateValue) == CFNumberGetTypeID()) {
+                int state = 0;
+                if (CFNumberGetValue((CFNumberRef)sharingStateValue, kCFNumberIntType, &state)) {
+                    if (sharing_state)
+                        *sharing_state = state;
+                    found = true;
+                }
+            }
+        }
+    }
+
+    CFRelease(windowInfoArray);
+    return found;
+}
+
+API_AVAILABLE(macos(12.5))
+static bool exclusion_window_exists(struct screen_capture *sc)
+{
+    if (!sc || sc->exclusion_window == kCGNullWindowID)
+        return false;
+
+    int sharingState = NSWindowSharingReadOnly;
+    if (!get_window_sharing_state(sc->exclusion_window, &sharingState)) {
+        if (!sc->exclusion_window_missing_logged) {
+            sc->exclusion_window_missing_logged = true;
+            MACCAP_LOG(LOG_INFO,
+                       "Display exclusion window %u is not yet present in WindowServer; skipping exclusion this cycle",
+                       (unsigned int)sc->exclusion_window);
+        }
+        return false;
+    }
+
+    sc->exclusion_window_missing_logged = false;
+    return true;
+}
+
+API_AVAILABLE(macos(12.5))
+static bool exclusion_window_is_nonshareable(struct screen_capture *sc)
+{
+    if (!sc || sc->exclusion_window == kCGNullWindowID)
+        return false;
+
+    if (!exclusion_window_exists(sc))
+        return false;
+
+    int sharingState = NSWindowSharingReadOnly;
+    if (!get_window_sharing_state(sc->exclusion_window, &sharingState))
+        return false;
+
+    if (sharingState != NSWindowSharingNone)
+        return false;
+
+    if (!sc->exclusion_window_nonshareable_logged) {
+        sc->exclusion_window_nonshareable_logged = true;
+        MACCAP_LOG(LOG_INFO,
+                   "Display exclusion window %u uses NSWindowSharingNone; skipping shareable-window lookup",
+                   (unsigned int)sc->exclusion_window);
+    }
+
+    return true;
+}
+
+API_AVAILABLE(macos(12.5))
+static SCWindow *resolve_display_exclusion_window(struct screen_capture *sc)
+{
+    if (!sc || sc->exclusion_window == kCGNullWindowID)
+        return nil;
+
+    if (!exclusion_window_exists(sc))
+        return nil;
+
+    if (exclusion_window_is_nonshareable(sc))
+        return nil;
+
+    SCWindow *excluded_window = find_shareable_window_by_id(sc, sc->exclusion_window);
+    if (excluded_window)
+        return excluded_window;
+
+    /*
+     * Shareable content is a snapshot. During window creation or reparenting
+     * (common with Qt/frameless paths), the mirror overlay may not appear in
+     * the first snapshot yet. Refresh a few times before giving up.
+     */
+    static const int max_refresh_attempts = 4;
+    for (int attempt = 1; attempt <= max_refresh_attempts; attempt++) {
+        os_sem_post(sc->shareable_content_available);
+        os_sleep_ms(50);
+        screen_capture_build_content_list(sc, true);
+        os_sem_wait(sc->shareable_content_available);
+
+        excluded_window = find_shareable_window_by_id(sc, sc->exclusion_window);
+        if (excluded_window) {
+            blog(LOG_INFO,
+                 "[ mac-screencapture ]: Resolved exclusion window %u after %d shareable-content refresh attempt(s)",
+                 (unsigned int)sc->exclusion_window, attempt);
+            return excluded_window;
+        }
+
+        if (!exclusion_window_exists(sc))
+            return nil;
+
+        if (exclusion_window_is_nonshareable(sc))
+            return nil;
+    }
+
+    if (!exclusion_window_exists(sc))
+        return nil;
+
+    if (exclusion_window_is_nonshareable(sc))
+        return nil;
+
+    MACCAP_LOG(LOG_WARNING,
+               "Display exclusion window %u was not found in ScreenCaptureKit shareable windows after retries; "
+               "recursion may occur until the window becomes shareable.",
+               (unsigned int)sc->exclusion_window);
+    return nil;
+}
+
 API_AVAILABLE(macos(12.5)) static bool init_screen_stream(struct screen_capture *sc)
 {
     SCContentFilter *content_filter;
@@ -81,6 +231,7 @@ API_AVAILABLE(macos(12.5)) static bool init_screen_stream(struct screen_capture 
 
     sc->frame = CGRectZero;
     sc->stream_properties = [[SCStreamConfiguration alloc] init];
+    screen_capture_build_content_list(sc, sc->capture_type == ScreenCaptureDisplayStream);
     os_sem_wait(sc->shareable_content_available);
 
     SCDisplayRef (^get_target_display)(void) = ^SCDisplayRef {
@@ -127,9 +278,18 @@ API_AVAILABLE(macos(12.5)) static bool init_screen_stream(struct screen_capture 
                 [empty release];
                 [exclusions release];
             } else {
-                NSArray *empty = [[NSArray alloc] init];
-                content_filter = [[SCContentFilter alloc] initWithDisplay:target_display excludingWindows:empty];
-                [empty release];
+                SCWindow *excluded_window = resolve_display_exclusion_window(sc);
+
+                NSArray *excluded_windows = nil;
+                if (excluded_window) {
+                    excluded_windows = [[NSArray alloc] initWithObjects:excluded_window, nil];
+                } else {
+                    excluded_windows = [[NSArray alloc] init];
+                }
+
+                content_filter =
+                    [[SCContentFilter alloc] initWithDisplay:target_display excludingWindows:excluded_windows];
+                [excluded_windows release];
             }
 
             set_display_mode(sc, target_display);
@@ -282,11 +442,13 @@ API_AVAILABLE(macos(12.5)) static void *sck_video_capture_create(obs_data_t *set
     sc->show_empty_names = obs_data_get_bool(settings, "show_empty_names");
     sc->show_hidden_windows = obs_data_get_bool(settings, "show_hidden_windows");
     sc->window = (CGWindowID) obs_data_get_int(settings, "window");
+    sc->exclusion_window = (CGWindowID) obs_data_get_int(settings, "lenses_exclude_window_id");
+    sc->exclusion_window_nonshareable_logged = false;
+    sc->exclusion_window_missing_logged = false;
     sc->capture_type = (unsigned int) obs_data_get_int(settings, "type");
     sc->audio_only = false;
 
     os_sem_init(&sc->shareable_content_available, 1);
-    screen_capture_build_content_list(sc, sc->capture_type == ScreenCaptureDisplayStream);
 
     sc->capture_delegate = [[ScreenCaptureDelegate alloc] init];
     sc->capture_delegate.sc = sc;
@@ -396,6 +558,7 @@ static void sck_video_capture_defaults(obs_data_t *settings)
     obs_data_set_default_string(settings, "display_uuid", NULL);
     obs_data_set_default_int(settings, "type", ScreenCaptureDisplayStream);
     obs_data_set_default_int(settings, "window", kCGNullWindowID);
+    obs_data_set_default_int(settings, "lenses_exclude_window_id", kCGNullWindowID);
     obs_data_set_default_bool(settings, "show_cursor", true);
     obs_data_set_default_bool(settings, "hide_obs", false);
     obs_data_set_default_bool(settings, "show_empty_names", false);
@@ -415,6 +578,7 @@ API_AVAILABLE(macos(12.5)) static void sck_video_capture_update(void *data, obs_
     ScreenCaptureStreamType capture_type = (ScreenCaptureStreamType) obs_data_get_int(settings, "type");
 
     CGDirectDisplayID display = get_display_migrate_settings(settings);
+    CGWindowID exclusion_window = (CGWindowID) obs_data_get_int(settings, "lenses_exclude_window_id");
 
     NSString *application_id = [[NSString alloc] initWithUTF8String:obs_data_get_string(settings, "application")];
     bool show_cursor = obs_data_get_bool(settings, "show_cursor");
@@ -425,7 +589,8 @@ API_AVAILABLE(macos(12.5)) static void sck_video_capture_update(void *data, obs_
     if (capture_type == sc->capture_type) {
         switch (sc->capture_type) {
             case ScreenCaptureDisplayStream: {
-                if (sc->display == display && sc->hide_cursor != show_cursor && sc->hide_obs == hide_obs) {
+                if (sc->display == display && sc->hide_cursor != show_cursor && sc->hide_obs == hide_obs &&
+                    sc->exclusion_window == exclusion_window) {
                     [application_id release];
                     return;
                 }
@@ -451,6 +616,11 @@ API_AVAILABLE(macos(12.5)) static void sck_video_capture_update(void *data, obs_
     destroy_screen_stream(sc);
     sc->capture_type = capture_type;
     sc->display = display;
+    if (sc->exclusion_window != exclusion_window) {
+        sc->exclusion_window_nonshareable_logged = false;
+        sc->exclusion_window_missing_logged = false;
+    }
+    sc->exclusion_window = exclusion_window;
     [sc->application_id release];
     sc->application_id = application_id;
     sc->hide_cursor = !show_cursor;
